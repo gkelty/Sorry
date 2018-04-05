@@ -16,10 +16,6 @@ class dbConnection:
 
             query.execute(newQuery)
 
-            for row in query.fetchall():
-                print("Username: " + row[1])
-
-
         except mysql.connector.Error as err:
           if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
             print("Something is wrong with your user name or password")
