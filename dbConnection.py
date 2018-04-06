@@ -21,16 +21,44 @@ class dbConnection:
 
 
         return dbConnect
-    
-    # This method is called when a user signs up. It will add a player to our DB. 
-    def addPlayer(dbConnect, username, password):
-        
-        newQuery = ("INSERT INTO tblPlayer (playerID, username, userPassword) VALUES (null," + "'" + username+ "'" + "," + "'" + password + "'" + ")")
-        print(newQuery)
 
+
+    def getUsernames(dbConnect):
+        
         query = dbConnect.cursor()
 
-        query.execute(newQuery)
-        dbConnect.commit()
+        query.execute("SELECT username FROM tblPlayer;")
 
-        print("Qeury was executed!")
+        usernames = query.fetchall()
+
+        usernameArray = []
+        for username in usernames:
+            username = str(username)
+            usernameArray.append(username.strip("')(,"))
+            
+        return usernameArray
+    
+    # This method is called when a user signs up. It will add a player to our DB. 
+    def addPlayer(dbConnect, newUser, password):
+        
+        query = dbConnect.cursor()
+
+        usernames = dbConnection.getUsernames(dbConnect)
+
+
+        if newUser not in usernames:
+            newQuery = ("INSERT INTO tblPlayer (playerID, username, userPassword) VALUES (null," + "'" + newUser+ "'" + "," + "'" + password + "'" + ")")
+            query.execute(newQuery)
+            dbConnect.commit()
+            print("Qeury was executed!")
+        else:
+            print("Username is already taken!")
+
+
+
+
+            
+
+        
+
+        
