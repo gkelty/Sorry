@@ -22,7 +22,7 @@ class dbConnection:
 
         return dbConnect
 
-
+#This method grabs the usernames in our DB at the time of call and puts them in an array and returns. 
     def getUsernames(dbConnect):
         
         query = dbConnect.cursor()
