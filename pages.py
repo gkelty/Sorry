@@ -3,6 +3,7 @@
 
 import tkinter as tk
 
+
 class SampleApp(tk.Tk):
     def __init__(self):
         tk.Tk.__init__(self)
@@ -31,6 +32,8 @@ class StartPage(tk.Frame):
         page_1_button.pack()
         page_2_button.pack()
 
+        
+
 class PageOne(tk.Frame):
     def __init__(self, master):
         tk.Frame.__init__(self, master)
@@ -55,4 +58,7 @@ class PageTwo(tk.Frame):
 
 if __name__ == "__main__":
     app = SampleApp()
+    app.title('Pygame')
     app.mainloop()
+
+    
