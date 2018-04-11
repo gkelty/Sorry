@@ -1,5 +1,5 @@
 
-# handle mutile windows on GUI.
+# handle mutile windows on.
 
 import tkinter as tk
 
