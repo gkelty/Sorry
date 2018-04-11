@@ -1,4 +1,6 @@
 
+# handle mutile windows on GUI.
+
 import tkinter as tk
 
 class SampleApp(tk.Tk):
