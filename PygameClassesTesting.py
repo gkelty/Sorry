@@ -1,7 +1,7 @@
 import pygame
 import sys
-from Button import *
-from TextInputBox import *
+from Button import Button
+from TextInputBox import TextInputBox
 
 """
 BUTTON: The two functions below are for testing and demonstration of
@@ -16,7 +16,8 @@ def myFantasticFunction():
 
 def getTextFromBox(textInput):
     input = textInput.getText()
-    print(input)
+    #print(input)
+    return input
 
 """
 BUTTON: Checks if a button is hit on mouse click and activates the relevant 

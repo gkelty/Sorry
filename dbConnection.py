@@ -1,7 +1,11 @@
 import mysql.connector
 from mysql.connector import errorcode
+import pygame
+smallText = pygame.font.Font('freesansbold.ttf', 20)
+displayWidth = 600
 
-<<<<<<< HEAD
+displayHeight = 600
+
 # This class will be used to make all of the SQL commands we will need. 
 class dbConnection:
 
@@ -41,22 +45,36 @@ class dbConnection:
     
     # This method is called when a user signs up. It will add a player to our DB. 
     def addPlayer(dbConnect, newUser, password):
-        
         query = dbConnect.cursor()
+        newQuery = ("INSERT INTO tblPlayer (playerID, username, userPassword) VALUES (null," + "'" + newUser+ "'" + "," + "'" + password + "'" + ")")
+        query.execute(newQuery)
+        dbConnect.commit()
 
+    def playerExist(username):
+        dbConnect = dbConnection.connectDB()
         usernames = dbConnection.getUsernames(dbConnect)
-
-
-        if newUser not in usernames:
-            newQuery = ("INSERT INTO tblPlayer (playerID, username, userPassword) VALUES (null," + "'" + newUser+ "'" + "," + "'" + password + "'" + ")")
-            query.execute(newQuery)
-            dbConnect.commit()
-            print("Qeury was executed!")
+        if username not in usernames:
+            return False
         else:
-            print("Username is already taken!")
+            return True
 
 
-
+# gets called when user hits button on signInDisplay() and either brings them back or
+# pushes the new (unique) username to our DB
+    def signIn(username):
+        import mainMenu
+        username = username.getText()
+        playerExist = dbConnection.playerExist(username)
+        if  playerExist == False:
+            mainMenu.signInDisplay()
+##            takenSurf, takenRect = mainMenu.text_objects("Username is already taken! ", smallText)
+##            takenRect.center = ((displayWidth/2),(displayHeight/4))
+##            mainMenu.screen.blit(takenSurf, takenRect)
+##            pygame.display.update()
+        else:
+            print("Go to 'Welcome Player' page")
+                
+        
 
             
 

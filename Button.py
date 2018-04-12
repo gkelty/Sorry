@@ -1,3 +1,4 @@
+
 import pygame
 import sys
 pygame.init()
@@ -5,6 +6,7 @@ pygame.init()
 WHITE = (255, 255, 255)
 GREY = (200, 200, 200)
 BLACK = (0, 0, 0)
+GREEN = (50, 200, 20)
 
 #Modified from http://www.dreamincode.net/forums/topic/401541-buttons-and-sliders-in-pygame/
 #Python programming tutorial, Buttons and Sliders in Pygame, posted Feb. 19, 2017 by user DK3250
@@ -69,10 +71,24 @@ class Button():
         self.buttonColor = self.color
         pos = pygame.mouse.get_pos()
         if self.rect.collidepoint(pos):
-            self.buttonColor = GREY     #changes button color upon mouseover
+            self.buttonColor = GREEN     #changes button color upon mouseover
 
     def callBack(self):
         if self.actionArgs == []:
             self.call_back_()
         else:
             self.call_back_(*self.actionArgs)
+
+            
+    def mouseButtonDown(buttons):
+        pos = pygame.mouse.get_pos()
+        for button in buttons:
+            if button.rect.collidepoint(pos):
+                button.callBack()
+
+    def getTextFromBox(textInput):
+        input = textInput.getText()
+        #print(input)
+        return input
+
+
