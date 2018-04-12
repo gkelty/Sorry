@@ -86,7 +86,8 @@ class TextInputBox:
             if event.type == pygame.KEYDOWN:
                 if self.active:
                     if event.key == pygame.K_RETURN:
-                        print(self.input_string)
+                        #print(self.input_string)
+                        return self.input_string
                         self.input_string = ''
                     # If none exist, create counter for that key:
                     if not event.key in self.keyrepeat_counters:
@@ -190,24 +191,25 @@ class TextInputBox:
     def clear_text(self):
         self.input_string = ""
 
-# Create TextInput-object
-textinput = TextInputBox(100, 100, 140, 22)
-
-screen = pygame.display.set_mode((1000, 200))
-clock = pygame.time.Clock()
-
-while True:
-    screen.fill((225, 225, 225))
-
-    events = pygame.event.get()
-    for event in events:
-        if event.type == pygame.QUIT:
-            exit()
-
-    # Feed it with events every frame
-    textinput.update(events)
-    # Blit its surface onto the screen
-    textinput.draw(screen)
-
-    pygame.display.flip()
-    clock.tick(30)
+## #Create TextInput-object
+##textinput = TextInputBox(100, 100, 140, 22)
+##
+##screen = pygame.display.set_mode((1000, 200))
+##clock = pygame.time.Clock()
+##
+##while True:
+##    screen.fill((225, 225, 225))
+##
+##    events = pygame.event.get()
+##    for event in events:
+##        if event.type == pygame.QUIT:
+##            exit()
+##
+##    # Feed it with events every frame
+##    textinput.update(events)
+##    # Blit its surface onto the screen
+##    textinput.draw(screen)
+##
+##    pygame.display.flip()
+##    clock.tick(30)
+##print(TextInputBox.get_text(textinput))

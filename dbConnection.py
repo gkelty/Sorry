@@ -1,7 +1,7 @@
 import mysql.connector
 from mysql.connector import errorcode
 
-<<<<<<< HEAD
+
 # This class will be used to make all of the SQL commands we will need. 
 class dbConnection:
 
