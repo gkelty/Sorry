@@ -7,6 +7,7 @@ WHITE = (255, 255, 255)
 GREY = (200, 200, 200)
 BLACK = (0, 0, 0)
 GREEN = (50, 200, 20)
+HOVER = (196,196,196)
 
 #Modified from http://www.dreamincode.net/forums/topic/401541-buttons-and-sliders-in-pygame/
 #Python programming tutorial, Buttons and Sliders in Pygame, posted Feb. 19, 2017 by user DK3250
@@ -71,7 +72,7 @@ class Button():
         self.buttonColor = self.color
         pos = pygame.mouse.get_pos()
         if self.rect.collidepoint(pos):
-            self.buttonColor = GREEN     #changes button color upon mouseover
+            self.buttonColor = HOVER     #changes button color upon mouseover
 
     def callBack(self):
         if self.actionArgs == []:

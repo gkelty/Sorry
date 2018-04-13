@@ -17,11 +17,17 @@ WHITE = (255, 255, 255)
 GREY = (200, 200, 200)
 BLACK = (0, 0, 0)
 GREEN = (50, 200, 20)
+DARKGREY = (127,127,127)
+FORESTGREEN = (34,139,34)
+BANANA = (227,207,87)
+RED = (238,0,0)
+BLUE=(30,144,255)
+SCREEN = (224,238,238)
 
 #text sizes
 smallText = pygame.font.Font('freesansbold.ttf', 20)
-
-
+mediumText = pygame.font.Font('freesansbold.ttf', 50)
+largeText = pygame.font.Font('freesansbold.ttf',115)
 
 def text_objects(text, font):
     textSurface = font.render(text, True, BLACK)
@@ -30,17 +36,112 @@ def text_objects(text, font):
 
 # Display an intro page that gives user the option to sign in or register 
 def intro():
-    intro = True
     screen = pygame.display.set_mode((displayWidth,displayHeight))
+    # create text input box object
+    userNameInput = TextInputBox(250, 300, 140, 22)
 
     # create the two buttons 
-    signInButton = Button("Sign In/Register", (300,400),signInDisplay)
-    registerButton = Button("Register",(300,450),register)
+    signInButton = Button("Sign In/Register", (300,400),dbConnection.signIn, actionArgs=[userNameInput,screen], buttonSize=(100,30), buttonColor=DARKGREY)
+
+    # create array of buttons
+    buttons = [signInButton]
+
+    # start clock
+    clock = pygame.time.Clock()
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                Button.mouseButtonDown(buttons)
+                userNameInput.updateEvent(event)
+            else:
+                userNameInput.updateEvent(event)
+                
+                
+        screen.fill(SCREEN)
+
+        # Display text object
+        TextSurf, TextRect = text_objects("Sorry!", largeText)
+        TextRect.center = ((displayWidth/2),(displayHeight/3))
+        screen.blit(TextSurf, TextRect)
+
+        
+        userNameInput.updateDisplay()
+        userNameInput.draw(screen)
+
+        # Display text object
+        userSurf, userRect = text_objects("Username: ", smallText)
+        userRect.center = ((displayWidth/3),(310))
+        screen.blit(userSurf, userRect)
+        
+        for button in buttons:
+            button.draw(screen)        
+
+        pygame.display.update()
+        clock.tick(30)       
+        
+# creates display when the user decides to sign in. 
+def startPage(username):
+    
+    screen = pygame.display.set_mode((displayWidth,displayHeight))
+    screen.fill(SCREEN)
+
+    newGameButton = Button("New Game", (300,200), newGame, buttonColor = FORESTGREEN, buttonSize=(200,30))
+    resumeGameButton = Button("Resume Game", (300,250), resumeGame, buttonSize=(200,30),buttonColor = BLUE)
+    instructionsButton = Button("Instructions", (300,300), instructions, buttonSize=(200,30),buttonColor = DARKGREY)
+    statsButton = Button("Game Statistics", (300,350), statsDisplay,actionArgs=[username], buttonSize=(200,30),buttonColor = BANANA)
+    exitButton = Button("Exit", (300,400), exitGame, buttonSize=(200,30),buttonColor = RED)
 
 
-    buttons = [signInButton, registerButton]
+    buttons = [newGameButton, resumeGameButton, instructionsButton, statsButton, exitButton]
 
-    while intro:
+    # start clock
+    clock = pygame.time.Clock()
+
+    while True:
+        
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                Button.mouseButtonDown(buttons)
+
+        for button in buttons:
+            button.draw(screen)
+
+        # Display text object
+        TextSurf, TextRect = text_objects(("Welcome, " + username), mediumText)
+        TextRect.center = ((displayWidth/2),(displayHeight/5))
+        screen.blit(TextSurf, TextRect)
+
+
+        pygame.display.update()
+        clock.tick(30)
+
+def statsDisplay(username):
+    screen = pygame.display.set_mode((displayWidth,displayHeight))
+    screen.fill(SCREEN)
+    
+    dbConnect = dbConnection.connectDB()
+    stats = dbConnection.getStats(dbConnect, username)
+
+    backButton = Button("Main Menu", (300,500), startPage, actionArgs=[username], buttonColor = FORESTGREEN, buttonSize=(200,30))
+    buttons = [backButton]
+
+    gamesPlayed = ("Games Played: " + str(stats[0]))
+    gamesInProgress = ("Games In Progress: " + str(stats[1]))
+    totalWins = ("Total Wins: " + str(stats[2]))
+    totalLosses = ("Total Losses: " + str(stats[3]))
+    totalKOs = ("Total KOs: " + str(stats[4]))
+    
+    clock = pygame.time.Clock()
+    
+    while True:
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -48,83 +149,54 @@ def intro():
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 Button.mouseButtonDown(buttons)
                 
-        screen.fill(GREY)
-        largeText = pygame.font.Font('freesansbold.ttf',115)
-        TextSurf, TextRect = text_objects("Sorry!", largeText)
-        TextRect.center = ((displayWidth/2),(displayHeight/3))
-        screen.blit(TextSurf, TextRect)
-
+        # Display title text object
+        titleSurf, titleRect = text_objects(("Stats for " + username), mediumText)
+        titleRect.center = ((displayWidth/2),(displayHeight/5))
+        screen.blit(titleSurf, titleRect)
         
-
-        for button in buttons:
-            button.draw(screen)
+        # Display games played stat text object
+        gpSurf, gpRect = text_objects((gamesPlayed), smallText)
+        gpRect.center = ((displayWidth/2),(displayHeight/2 - 100))
+        screen.blit(gpSurf, gpRect)
         
-        pygame.display.update()
+        # Display games in progress stat text object
+        gipSurf, gipRect = text_objects((gamesInProgress), smallText)
+        gipRect.center = ((displayWidth/2),(displayHeight/2) - 50)
+        screen.blit(gipSurf, gipRect)
+
+        # Display  stat text object
+        winsSurf, winsRect = text_objects((totalWins), smallText)
+        winsRect.center = ((displayWidth/2),(displayHeight/2))
+        screen.blit(winsSurf, winsRect)
+
+        # Display games in progress stat text object
+        lossesSurf, lossesRect = text_objects((totalLosses), smallText)
+        lossesRect.center = ((displayWidth/2),(displayHeight/2) + 50)
+        screen.blit(lossesSurf, lossesRect)
         
-
-
-# creates display when the user decides to sign in. 
-def signInDisplay():
-    signIn = True
-    # create screen
-    screen = pygame.display.set_mode((displayWidth,displayHeight))
-
-    # create text box objects
-    userNameInput = TextInputBox(250, 190, 140, 22)
-    ##passwordInput = TextInputBox(250, 229, 140, 22)
-    
-    # create button to save username/password
-    signInButton = Button("Sign In", (400,300), dbConnection.signIn, actionArgs=[userNameInput])
-    
-    backButton = Button("Back", (300,300), intro)
-
-    buttons = [signInButton,backButton]
-
-
-
-    # Creates a clock to track time for the text input box
-    clock = pygame.time.Clock()
-
-    while signIn:
-        screen.fill(GREY)
-        events = pygame.event.get()
-        for event in events:
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                Button.mouseButtonDown(buttons)
-                userNameInput.updateEvent(event)
-                ##passwordInput.updateEvent(event)
-            else:
-                userNameInput.updateEvent(event)
-                ##passwordInput.updateEvent(event)
-                
+        # Display games in progress stat text object
+        KOsSurf, KOsRect = text_objects((totalKOs), smallText)
+        KOsRect.center = ((displayWidth/2),(displayHeight/2) + 100)
+        screen.blit(KOsSurf, KOsRect)
         
-        userNameInput.updateDisplay()
-        ##passwordInput.updateDisplay()
-
-        userNameInput.draw(screen)
-        ##passwordInput.draw(screen)
-
-        userSurf, userRect = text_objects("Username: ", smallText)
-        ##passSurf, passRect = text_objects("Password: ", smallText)
+        # Draw button to screen
+        backButton.draw(screen)
         
-        userRect.center = ((displayWidth/3),(displayHeight/3))
-        ##passRect.center = ((displayWidth/3),(displayHeight/3 + 40))
-        
-        screen.blit(userSurf, userRect)
-        ##screen.blit(passSurf, passRect)
-        
-        for button in buttons:
-            button.draw(screen)        
-
         pygame.display.update()
         clock.tick(30)
 
 
-def register():
-    print("Thanks for registering")
+def newGame():
+    print("start new game here")
+def resumeGame():
+    print("resume game")
+def instructions():
+    print("print instructions")
+
+def exitGame():
+    print("Game Quit")
+    pygame.quit()
+    sys.exit()
 
 
 
