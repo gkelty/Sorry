@@ -54,6 +54,17 @@ class Button():
         self.actionArgs = actionArgs
 
     """
+    BUTTON: Checks if a button is hit on mouse click and activates the relevant 
+    button action.
+    """
+
+    def mouseButtonDown(self, buttons):
+        pos = pygame.mouse.get_pos()
+        for button in buttons:
+            if button.rect.collidepoint(pos):
+                button.callBack()
+
+    """
     Calls the mouseover function, then updates the button surface with 
     color and text and blits to screen.
     """
@@ -71,7 +82,7 @@ class Button():
         self.buttonColor = self.color
         pos = pygame.mouse.get_pos()
         if self.rect.collidepoint(pos):
-            self.buttonColor = GREEN     #changes button color upon mouseover
+            self.buttonColor = GREY     #changes button color upon mouseover
 
     def callBack(self):
         if self.actionArgs == []:
