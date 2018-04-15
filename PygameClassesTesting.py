@@ -59,8 +59,9 @@ def main():
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                Button.mouseButtonDown(buttons)
-                textInput.updateEvent(event)
+                for button in buttons:
+                    button.mouseButtonDown()
+                    textInput.updateEvent(event)
             else:
                 textInput.updateEvent(event)
         textInput.updateDisplay()

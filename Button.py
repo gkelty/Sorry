@@ -20,7 +20,8 @@ class Button():
                  fontSize=16,
                  textColor=BLACK,
                  buttonColor=WHITE,
-                 buttonSize=(80, 30)):
+                 buttonSize=(80, 30),
+                 active=True):
         """
         Args:
             text: a string written to the button surface, may be empty
@@ -52,6 +53,7 @@ class Button():
         # Action of the button
         self.call_back_ = action
         self.actionArgs = actionArgs
+        self.active = active
 
     """
     BUTTON: Checks if a button is hit on mouse click and activates the relevant 
@@ -85,21 +87,13 @@ class Button():
             self.buttonColor = GREY     #changes button color upon mouseover
 
     def callBack(self):
-        if self.actionArgs == []:
-            self.call_back_()
-        else:
-            self.call_back_(*self.actionArgs)
+        if self.active:
+            if self.actionArgs == []:
+                self.call_back_()
+            else:
+                self.call_back_(*self.actionArgs)
 
-            
-    def mouseButtonDown(buttons):
+    def mouseButtonDown(self):
         pos = pygame.mouse.get_pos()
-        for button in buttons:
-            if button.rect.collidepoint(pos):
-                button.callBack()
-
-    def getTextFromBox(textInput):
-        input = textInput.getText()
-        #print(input)
-        return input
-
-
+        if self.rect.collidepoint(pos):
+            self.callBack()
