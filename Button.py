@@ -36,8 +36,9 @@ class Button():
             buttonSize: size of button
         """
         # Color and size of button
+        self.buttonColor = buttonColor #the current button color
         self.color = buttonColor #the normal button color
-        self.buttonColor = backgroundColor #the color displayed upon mouseover
+        self.mouseoverColor = backgroundColor #the color displayed upon mouseover
         self.textColor = textColor
         self.buttonSize = buttonSize
 
@@ -90,7 +91,7 @@ class Button():
         self.buttonColor = self.color
         pos = pygame.mouse.get_pos()
         if self.rect.collidepoint(pos):
-            self.buttonColor = self.buttonColor     #changes button color upon mouseover
+            self.buttonColor = self.mouseoverColor     #changes button color upon mouseover
 
     def callBack(self):
         if self.active:
