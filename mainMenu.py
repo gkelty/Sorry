@@ -22,7 +22,7 @@ FORESTGREEN = (34,139,34)
 BANANA = (227,207,87)
 RED = (238,0,0)
 BLUE=(30,144,255)
-SCREEN = (224,238,238)
+SCREEN = (115, 235, 220)
 
 #text sizes
 smallText = pygame.font.Font('freesansbold.ttf', 20)
@@ -55,7 +55,8 @@ def intro():
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                Button.mouseButtonDown(buttons)
+                for button in buttons:
+                    Button.mouseButtonDown(button)
                 userNameInput.updateEvent(event)
             else:
                 userNameInput.updateEvent(event)
@@ -108,7 +109,8 @@ def startPage(username):
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                Button.mouseButtonDown(buttons)
+                for button in buttons:
+                   Button.mouseButtonDown(button)
 
         for button in buttons:
             button.draw(screen)
@@ -137,6 +139,8 @@ def statsDisplay(username):
     totalWins = ("Total Wins: " + str(stats[2]))
     totalLosses = ("Total Losses: " + str(stats[3]))
     totalKOs = ("Total KOs: " + str(stats[4]))
+
+    statistics = [gamesPlayed, gamesInProgress, totalWins, totalLosses, totalKOs]
     
     clock = pygame.time.Clock()
     
@@ -147,37 +151,23 @@ def statsDisplay(username):
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                Button.mouseButtonDown(buttons)
-                
+                for button in buttons:
+                    Button.mouseButtonDown(button)
+
         # Display title text object
         titleSurf, titleRect = text_objects(("Stats for " + username), mediumText)
         titleRect.center = ((displayWidth/2),(displayHeight/5))
         screen.blit(titleSurf, titleRect)
-        
-        # Display games played stat text object
-        gpSurf, gpRect = text_objects((gamesPlayed), smallText)
-        gpRect.center = ((displayWidth/2),(displayHeight/2 - 100))
-        screen.blit(gpSurf, gpRect)
-        
-        # Display games in progress stat text object
-        gipSurf, gipRect = text_objects((gamesInProgress), smallText)
-        gipRect.center = ((displayWidth/2),(displayHeight/2) - 50)
-        screen.blit(gipSurf, gipRect)
 
-        # Display  stat text object
-        winsSurf, winsRect = text_objects((totalWins), smallText)
-        winsRect.center = ((displayWidth/2),(displayHeight/2))
-        screen.blit(winsSurf, winsRect)
-
-        # Display games in progress stat text object
-        lossesSurf, lossesRect = text_objects((totalLosses), smallText)
-        lossesRect.center = ((displayWidth/2),(displayHeight/2) + 50)
-        screen.blit(lossesSurf, lossesRect)
+        # initialize height 
+        height = (displayHeight/2 - 100)
         
-        # Display games in progress stat text object
-        KOsSurf, KOsRect = text_objects((totalKOs), smallText)
-        KOsRect.center = ((displayWidth/2),(displayHeight/2) + 100)
-        screen.blit(KOsSurf, KOsRect)
+        # Display the rest of the stat text objects
+        for stat in statistics:
+            Surf, Rect = text_objects((stat), smallText)
+            Rect.center = ((displayWidth/2),(height))
+            screen.blit(Surf, Rect)
+            height += 50
         
         # Draw button to screen
         backButton.draw(screen)
