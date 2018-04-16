@@ -5,10 +5,6 @@ import os.path
 
 pygame.font.init()
 
-COLOR_INACTIVE = pygame.Color('lightskyblue3')
-COLOR_ACTIVE = pygame.Color('dodgerblue2')
-BLACK = (0, 0, 0)
-
 
 # Modified from https://github.com/Nearoo/pygame-text-input/blob/master/pygame_textinput.py
 # Github, pygame_textinput, posted Nov. 28, 2017, updated Feb. 8, 2018 by user Nearoo
@@ -20,6 +16,11 @@ class TextInputBox:
     This class lets the user input a piece of text within a box at a blinking cursor.
     Position within the text can be moved using the arrow-keys. Delete, backspace, home and end work as well.
     """
+
+    COLOR_INACTIVE = pygame.Color('lightskyblue3')
+    COLOR_ACTIVE = pygame.Color('dodgerblue2')
+    BLACK = (0, 0, 0)
+
     def __init__(self, x, y, w, h,
                  fontName="",
                  fontSize=25,
@@ -37,7 +38,7 @@ class TextInputBox:
 
         # Box related vars:
         self.rect = pygame.Rect(x, y, w, h)
-        self.color = COLOR_INACTIVE
+        self.color = TextInputBox.COLOR_INACTIVE
         self.active = False
 
         # Text related vars:
@@ -79,10 +80,10 @@ class TextInputBox:
         self.clock.tick()
         # Change the current color of the input box.
         if self.active:
-            self.color = COLOR_ACTIVE
+            self.color = TextInputBox.COLOR_ACTIVE
             self.cursorVisible = True
         else:
-            self.color = COLOR_INACTIVE
+            self.color = TextInputBox.COLOR_INACTIVE
             self.cursorVisible = False
 
         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -152,7 +153,6 @@ class TextInputBox:
             if self.cursorPosition > 0:
                 cursorYPos -= self.cursorSurface.get_width()
             self.surface.blit(self.cursorSurface, (cursorYPos, 0))
-
 
     def getSurface(self):
         return self.surface

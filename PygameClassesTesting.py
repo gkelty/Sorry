@@ -19,16 +19,6 @@ def getTextFromBox(textInput):
     #print(input)
     return input
 
-"""
-BUTTON: Checks if a button is hit on mouse click and activates the relevant 
-button action.
-"""
-def mouseButtonDown(buttons):
-    pos = pygame.mouse.get_pos()
-    for button in buttons:
-        if button.rect.collidepoint(pos):
-            button.callBack()
-
 def main():
     # Create screen
     screen = pygame.display.set_mode((1000, 200))
@@ -59,8 +49,9 @@ def main():
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                mouseButtonDown(buttons)
-                textInput.updateEvent(event)
+                for button in buttons:
+                    button.mouseButtonDown()
+                    textInput.updateEvent(event)
             else:
                 textInput.updateEvent(event)
         textInput.updateDisplay()
