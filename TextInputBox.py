@@ -6,7 +6,6 @@ import os.path
 pygame.font.init()
 
 
-
 # Modified from https://github.com/Nearoo/pygame-text-input/blob/master/pygame_textinput.py
 # Github, pygame_textinput, posted Nov. 28, 2017, updated Feb. 8, 2018 by user Nearoo
 # and from  https://stackoverflow.com/questions/46390231/how-to-create-a-text-input-box-with-pygame

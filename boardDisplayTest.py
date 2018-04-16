@@ -1,6 +1,7 @@
 import pygame
 import sys
 import os
+from Board import Board
 from Card import Card, Deck
 from Button import Button
 import Image
@@ -8,28 +9,51 @@ import Image
 pygame.init()
 
 # Create screen and initialize clock
-screen = pygame.display.set_mode((1000, 800))
+screen = pygame.display.set_mode((1000, 600))
 clock = pygame.time.Clock()
 
-# Create deck, shuffle it, and print the order (top card listed last), and draw first card
-deck = Deck()
-shuffledDeck = deck.shuffle()
-deck.showCards()
-#currentCard = deck.drawCard()
-#currentCard = None
+# Create new board and shuffled deck
+board = Board(boardOrientation=0, boardLocation=(350, 0))
+
+# Print the order of the shuffled deck (top card listed last) for testing purposes
+board.deck.showCards()
 
 # Define additional button colors (beyond white, grey, black)
+TRANSPARENT = (0, 0, 0, 0)
 GREEN = (50, 200, 20)
 
-# Create button
-drawPile = Button("Draw Card", (650, 270), deck.drawCard,
-                    buttonColor=GREEN, buttonSize = (60,30))
+# Checks tile locations around the outside track
+def moveForwardOne():
+    tileName = board.pawns[0].tileName
+    board.pawns[0].tileName = board.tiles[tileName]['tileAhead']
+    return None
 
-discardCard = Button("Discard Card", (260, 150), deck.discardCard,
+# Checks all tile locations in whole board (init only one player for this test)
+# Uncomment the following and add the moveForwardAll button to buttons list:
+
+#board = Board(boardOrientation=0, playersEnabled=[True, False, False, False])
+
+def moveForwardAll():
+    tileName = board.pawns[0].tileName
+    board.pawns[0].tileName = (tileName %88) +1
+    return None
+
+
+# Create buttons
+drawPile = Button("Draw Card", (650, 250), board.deck.drawCard,
+                    buttonColor=TRANSPARENT, backgroundColor=TRANSPARENT, buttonSize = (75,45))
+
+discardCard = Button("Discard Card", (260, 150), board.deck.discardCard,
                     buttonColor=GREEN, buttonSize = (100,30))
 
+moveForwardOne = Button("Move Forward", (260, 250), moveForwardOne,
+                    buttonColor=GREEN, buttonSize = (100,30))
+
+moveForwardAll = Button("MoveForward2", (260, 350), moveForwardAll,
+                        buttonColor=GREEN, buttonSize=(100, 30))
+
 # Put button in a list for simpler game loop
-buttons = [drawPile, discardCard]
+buttons = [drawPile, discardCard, moveForwardOne]
 
 # Example game loop
 while True:
@@ -42,16 +66,15 @@ while True:
             for button in buttons:
                 button.mouseButtonDown()
 
-    # Blit board on screen
-    screen.blit(Image.getImage('images\sorryGameBoardCombined.png'), (350, 20))
+    # Blit board and cards to screen
+    board.displayBoard(screen)
 
     # Blit buttons on screen
     for button in buttons:
         button.draw(screen)
 
-    #Blit current card on screen
-    if deck.currentCard != None:
-        deck.displayCard(screen, (575, 200))
+    # Activate or deactivate drawPile
+    if board.deck.currentCard != None:
         drawPile.active = False
     else:
         drawPile.active = True

@@ -32,12 +32,15 @@ class Card:
 This class contains information to create and manipulate a deck of cards and display a card from the deck.
 """
 class Deck:
+    drawPileImage = Image.getImage('images\sorryCardBackSmall.png')
+    values = ["1", "2", "3", "4", "5", "7", "8", "10", "11", "12", "S"]
     def __init__(self):
         self.cards = []
-        self.values = ["1", "2", "3", "4", "5", "7", "8", "10", "11", "12", "S"]
+        self.drawPileActive = True
         self.currentCard = None
+        self.discard = None
         for i in range(4):
-            for value in self.values:
+            for value in Deck.values:
                 self.cards.append(Card(value))
         self.cards.append(Card("1"))
 
@@ -50,10 +53,21 @@ class Deck:
 
     def drawCard(self):
         self.currentCard = self.cards.pop()
-        #return self.currentCard
+        if len(self.cards) == 0:
+            self.drawPileActive = False
+        return self.drawPileActive
 
     def discardCard(self):
+        if self.currentCard != None:
+            self.discard = pygame.transform.rotozoom(self.currentCard.getCardImage(), 90, 0.3)
         self.currentCard = None
 
-    def displayCard(self, screen, location):
-        screen.blit(self.currentCard.getCardImage(), location)
+
+    def displayDeck(self, screen, drawPileLocation, discardPileLocation, bigCardLocation):
+        if self.drawPileActive:
+            if self.currentCard == None:
+                screen.blit(Deck.drawPileImage, (drawPileLocation))
+                if self.discard != None:
+                    screen.blit(self.discard, (discardPileLocation))
+            else:
+                screen.blit(self.currentCard.getCardImage(), (bigCardLocation))

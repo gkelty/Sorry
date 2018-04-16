@@ -20,6 +20,7 @@ class Button():
                  fontSize=16,
                  textColor=BLACK,
                  buttonColor=WHITE,
+                 backgroundColor=GREY,
                  buttonSize=(80, 30),
                  active=True):
         """
@@ -36,7 +37,7 @@ class Button():
         """
         # Color and size of button
         self.color = buttonColor #the normal button color
-        self.buttonColor = buttonColor #the color displayed upon mouseover
+        self.buttonColor = backgroundColor #the color displayed upon mouseover
         self.textColor = textColor
         self.buttonSize = buttonSize
 
@@ -59,7 +60,6 @@ class Button():
     BUTTON: Checks if a button is hit on mouse click and activates the relevant 
     button action.
     """
-
     def mouseButtonDown(self, buttons):
         pos = pygame.mouse.get_pos()
         for button in buttons:
@@ -73,9 +73,15 @@ class Button():
     def draw(self, screen):
         self.mouseover()
 
-        self.surface.fill(self.buttonColor)
-        self.surface.blit(self.txtSurf, self.txtRect)
-        screen.blit(self.surface, self.rect)
+        if self.active:
+            if len(self.buttonColor) == 4:
+                self.surface.set_alpha(self.buttonColor[3])
+            else:
+                self.surface.set_alpha(None)
+            self.surface.fill(self.buttonColor)
+            self.surface.blit(self.txtSurf, self.txtRect)
+            screen.blit(self.surface, self.rect)
+
     """
     Changes the button color temporarily if the mouse is hovering 
     over the button
@@ -84,7 +90,7 @@ class Button():
         self.buttonColor = self.color
         pos = pygame.mouse.get_pos()
         if self.rect.collidepoint(pos):
-            self.buttonColor = GREY     #changes button color upon mouseover
+            self.buttonColor = self.buttonColor     #changes button color upon mouseover
 
     def callBack(self):
         if self.active:
