@@ -25,6 +25,7 @@ BLUE=(30,144,255)
 SCREEN = (115, 235, 220)
 
 #text sizes
+instructionText = pygame.font.Font('freesansbold.ttf', 14)
 smallText = pygame.font.Font('freesansbold.ttf', 20)
 mediumText = pygame.font.Font('freesansbold.ttf', 50)
 largeText = pygame.font.Font('freesansbold.ttf',115)
@@ -86,13 +87,13 @@ def intro():
         
 # creates display when the user decides to sign in. 
 def startPage(username):
-    
+    startPage = True
     screen = pygame.display.set_mode((displayWidth,displayHeight))
     screen.fill(SCREEN)
 
     newGameButton = Button("New Game", (300,200), newGame, buttonColor = FORESTGREEN, buttonSize=(200,30))
     resumeGameButton = Button("Resume Game", (300,250), resumeGame, buttonSize=(200,30),buttonColor = BLUE)
-    instructionsButton = Button("Instructions", (300,300), instructions, buttonSize=(200,30),buttonColor = DARKGREY)
+    instructionsButton = Button("Instructions", (300,300), instructions, actionArgs=[username], buttonSize=(200,30),buttonColor = DARKGREY)
     statsButton = Button("Game Statistics", (300,350), statsDisplay,actionArgs=[username], buttonSize=(200,30),buttonColor = BANANA)
     exitButton = Button("Exit", (300,400), exitGame, buttonSize=(200,30),buttonColor = RED)
 
@@ -101,8 +102,8 @@ def startPage(username):
 
     # start clock
     clock = pygame.time.Clock()
-
-    while True:
+    
+    while startPage:
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -180,8 +181,41 @@ def newGame():
     print("start new game here")
 def resumeGame():
     print("resume game")
-def instructions():
-    print("print instructions")
+def instructions(username):
+    screen = pygame.display.set_mode((displayWidth,displayHeight))
+    screen.fill(SCREEN)
+
+    backButton = Button("Main Menu", (300,500), startPage, actionArgs=[username], buttonColor = FORESTGREEN, buttonSize=(200,30))
+    buttons = [backButton]
+    while True:
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                for button in buttons:
+                    Button.mouseButtonDown(backButton)
+                    
+        # Display title text object
+        titleSurf, titleRect = text_objects(("Instructions:"), mediumText)
+        titleRect.center = ((displayWidth/2),(displayHeight/5))
+        screen.blit(titleSurf, titleRect)
+    
+        infile = open("instructionText.txt", 'r')
+        instructions = []
+        for line in infile:
+            instructions.append(line)
+
+        height = (displayHeight/2 - 100)
+        for instruction in instructions:
+                Surf, Rect = text_objects((instruction), instructionText)
+                Rect.center = ((displayWidth/2),(height))
+                screen.blit(Surf, Rect)
+                height += 50
+
+        backButton.draw(screen)
+        pygame.display.update()
 
 def exitGame():
     print("Game Quit")
