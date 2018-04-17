@@ -31,7 +31,7 @@ def moveForwardOne():
 # Checks all tile locations in whole board (init only one player for this test)
 # Uncomment the following and add the moveForwardAll button to buttons list:
 
-#board = Board(boardOrientation=0, playersEnabled=[True, False, False, False])
+board = Board(boardOrientation=0, playersEnabled=[True, False, False, False])
 
 def moveForwardAll():
     tileName = board.pawns[0].tileName
@@ -53,8 +53,10 @@ moveForwardAll = Button("MoveForward2", (260, 350), moveForwardAll,
                         buttonColor=GREEN, buttonSize=(100, 30))
 
 # Put button in a list for simpler game loop
-buttons = [drawPile, discardCard, moveForwardOne]
-
+buttons = [drawPile, discardCard, moveForwardOne, moveForwardAll]
+boardButtons = (board.returnBoard())
+for i in range(0,len(boardButtons)):
+    buttons.append(boardButtons[i])
 # Example game loop
 while True:
     screen.fill((225, 225, 225))
