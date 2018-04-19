@@ -87,11 +87,10 @@ def intro():
         
 # creates display when the user decides to sign in. 
 def startPage(username):
-    startPage = True
     screen = pygame.display.set_mode((displayWidth,displayHeight))
     screen.fill(SCREEN)
 
-    newGameButton = Button("New Game", (300,200), newGame, buttonColor = FORESTGREEN, buttonSize=(200,30))
+    newGameButton = Button("New Game", (300,200), newGame, actionArgs=[username], buttonColor = FORESTGREEN, buttonSize=(200,30))
     resumeGameButton = Button("Resume Game", (300,250), resumeGame, buttonSize=(200,30),buttonColor = BLUE)
     instructionsButton = Button("Instructions", (300,300), instructions, actionArgs=[username], buttonSize=(200,30),buttonColor = DARKGREY)
     statsButton = Button("Game Statistics", (300,350), statsDisplay,actionArgs=[username], buttonSize=(200,30),buttonColor = BANANA)
@@ -103,7 +102,7 @@ def startPage(username):
     # start clock
     clock = pygame.time.Clock()
     
-    while startPage:
+    while True:
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -176,11 +175,78 @@ def statsDisplay(username):
         pygame.display.update()
         clock.tick(30)
 
+def setColor(color1,color2):
+    print(color1.getText())
+    print(color2.getText())
 
-def newGame():
+    
+def newGame(username):
+
+    screen = pygame.display.set_mode((displayWidth,displayHeight))
+    screen.fill(SCREEN)
+
+    clock = pygame.time.Clock()
+    names = [username, "Computer 1", "Computer 2", "Computer3"]
+
+    color1 = TextInputBox(250, 300, 140, 22)
+    color2 = TextInputBox(350, 300, 140, 22)
+
+    colorButton = Button("set color", (300,250), setColor, actionArgs=[color1,color2], buttonSize=(200,30),buttonColor = BLUE)
+    print(colorButton.buttonColor)
+    buttons = [colorButton]
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                for button in buttons:
+                    Button.mouseButtonDown(button)
+                    print(button.getButtonColor())
+
+                    color1.updateEvent(event)
+                    color2.updateEvent(event)
+
+            else:
+                color1.updateEvent(event)
+                color2.updateEvent(event)
+
+        screen.fill(SCREEN)
+
+        TextSurf, TextRect = text_objects(("New Game Setup"), mediumText)
+        TextRect.center = ((displayWidth/2),(displayHeight/7))
+        screen.blit(TextSurf, TextRect)
+
+        height = displayHeight/3
+        for name in names:
+            TextSurf, TextRect = text_objects((name), smallText)
+            TextRect.center = ((displayWidth/6),(height))
+            screen.blit(TextSurf, TextRect)
+            height += 100
+            
+        color1.updateDisplay()
+        color1.draw(screen)
+        color2.updateDisplay()
+        color2.draw(screen)
+
+
+        for button in buttons:
+            color = button.getButtonColor()
+            button.draw2(screen,color)
+            print(color)
+        pygame.display.update()
+        clock.tick(30)
+
+    
     print("start new game here")
+
+    print(colorInput)
+    
 def resumeGame():
     print("resume game")
+
+    
 def instructions(username):
     screen = pygame.display.set_mode((displayWidth,displayHeight))
     screen.fill(SCREEN)
@@ -210,9 +276,9 @@ def instructions(username):
         height = (displayHeight/2 - 100)
         for instruction in instructions:
                 Surf, Rect = text_objects((instruction), instructionText)
-                Rect.center = ((displayWidth/2),(height))
+                Rect.topleft = ((20),(height))
                 screen.blit(Surf, Rect)
-                height += 50
+                height += 25
 
         backButton.draw(screen)
         pygame.display.update()
