@@ -1,15 +1,15 @@
 import pygame
-from Button import Button
-GREEN = (50, 200, 20)
-class BoardButton():
-    def __init__(self,tileNum,location):
-        self.tileNum = str(tileNum)
-        self.location = location
-    def createBoard(self):
-        boardButton = Button(self.tileNum, self.location, self.testin(),
-                             buttonColor=GREEN, buttonSize=(35,35))
-        return(boardButton)
 
+TRANSPARENT = (0, 0, 0, 0)
+class BoardButton():
+    def __init__(self,tileNum,locationX,locationY):
+        self.tileNum = str(tileNum)
+
+        self.location = (locationX,locationY)
+    def getLocation(self):
+        return(self.location)
+    def getTileNum(self):
+        return(self.tileNum)
     def testin(self):
         print(self.tileNum)
         print(self.location)

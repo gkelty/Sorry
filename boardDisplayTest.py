@@ -4,6 +4,7 @@ import os
 from Board import Board
 from Card import Card, Deck
 from Button import Button
+from boardButton import BoardButton
 import Image
 
 pygame.init()
@@ -37,8 +38,19 @@ def moveForwardAll():
     tileName = board.pawns[0].tileName
     board.pawns[0].tileName = (tileName %88) +1
     return None
-
-
+def movePawn():
+    print("Moved")
+    board.pawns[0].tileName = int(button.getBoardButton())
+    return None
+buttons = []
+for i in range(1, 89):
+    propLocX = board.tiles[i]['pos'][0]
+    propLocY = board.tiles[i]['pos'][1]
+    propLocX = propLocX + board.boardLocation[0]
+    propLocY = propLocY + board.boardLocation[1]
+    boardBut = BoardButton(i, propLocX, propLocY)
+    boardButt = Button("Board", boardBut.getLocation(), movePawn, buttonColor=TRANSPARENT, buttonSize=(35, 35),boardButton=True,boardButtObj=boardBut)
+    buttons.append(boardButt)
 # Create buttons
 drawPile = Button("Draw Card", (650, 250), board.deck.drawCard,
                     buttonColor=TRANSPARENT, backgroundColor=TRANSPARENT, buttonSize = (75,45))
@@ -53,10 +65,13 @@ moveForwardAll = Button("MoveForward2", (260, 350), moveForwardAll,
                         buttonColor=GREEN, buttonSize=(100, 30))
 
 # Put button in a list for simpler game loop
-buttons = [drawPile, discardCard, moveForwardOne, moveForwardAll]
-boardButtons = (board.returnBoard())
-for i in range(0,len(boardButtons)):
-    buttons.append(boardButtons[i])
+buttons.append(drawPile)
+buttons.append(discardCard)
+buttons.append(moveForwardOne)
+buttons.append(moveForwardAll)
+
+#for i in range(0,len(boardButtons)):
+  #  buttons.append(boardButtons[i])
 # Example game loop
 while True:
     screen.fill((225, 225, 225))

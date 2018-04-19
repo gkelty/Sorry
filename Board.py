@@ -133,14 +133,18 @@ class Board:
                                             #only rotate init colors to match board rotation, not startLocations
         self.deck = Deck()
         self.deck.shuffle() 
-        self.boardButtons = []
-        for i in range(1,89):
-            boardBut = BoardButton(i, self.tiles[i]['pos'])
-            self.boardButtons.append(boardBut.createBoard())
+        # self.boardButtons = []
+        # for i in range(1,89):
+        #     propLocX = self.tiles[i]['pos'][0]
+        #     propLocY = self.tiles[i]['pos'][1]
+        #     propLocX = propLocX+self.boardLocation[0]
+        #     propLocY = propLocY+self.boardLocation[1]
+        #     boardBut = BoardButton(i,propLocX,propLocY)
+        #     self.boardButtons.append(boardBut.createBoard())
 
 
-    def returnBoard(self):
-        return(self.boardButtons)
+    #def returnBoard(self):
+       # return(self.boardButtons)
     def displayBoard(self, screen):
         screen.blit(self.image, self.boardLocation)
         screen.blit(Board.boardCenterImage, self.boardLocation)
