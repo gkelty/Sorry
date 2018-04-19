@@ -1,6 +1,7 @@
 import pygame
 from Pawn import Pawn
 from Card import Card, Deck
+from boardButton import BoardButton
 import Image
 
 class Board:
@@ -131,14 +132,26 @@ class Board:
                     self.pawns.append(Pawn(id, Pawn.colors[index], index+1, Board.startLocations[i]))
                                             #only rotate init colors to match board rotation, not startLocations
         self.deck = Deck()
-        self.deck.shuffle()
+        self.deck.shuffle() 
+        # self.boardButtons = []
+        # for i in range(1,89):
+        #     propLocX = self.tiles[i]['pos'][0]
+        #     propLocY = self.tiles[i]['pos'][1]
+        #     propLocX = propLocX+self.boardLocation[0]
+        #     propLocY = propLocY+self.boardLocation[1]
+        #     boardBut = BoardButton(i,propLocX,propLocY)
+        #     self.boardButtons.append(boardBut.createBoard())
 
+
+    #def returnBoard(self):
+       # return(self.boardButtons)
     def displayBoard(self, screen):
         screen.blit(self.image, self.boardLocation)
         screen.blit(Board.boardCenterImage, self.boardLocation)
 
         #Blit current card on screen
         self.deck.displayDeck(screen, self.drawPileLocation, self.discardPileLocation, self.bigCardLocation)
+
 
         #Blit pawns on screen
         pawnsStartHome = {}

@@ -1,5 +1,6 @@
 import pygame
 import sys
+from boardButton import BoardButton
 pygame.init()
 
 WHITE = (255, 255, 255)
@@ -21,7 +22,9 @@ class Button():
                  buttonColor=WHITE,
                  backgroundColor=GREY,
                  buttonSize=(80, 30),
-                 active=True):
+                 active=True,
+                 boardButton = False,
+                 boardButtObj = 0):
         """
         Args:
             text: a string written to the button surface, may be empty
@@ -55,11 +58,15 @@ class Button():
         self.call_back_ = action
         self.actionArgs = actionArgs
         self.active = active
+        if(boardButton == True):
+            self.boardButton = boardButtObj
 
     """
     BUTTON: Checks if a button is hit on mouse click and activates the relevant 
     button action.
     """
+    def getBoardButton(self):
+        return(self.boardButton.getTileNum())
     def mouseButtonDown(self, buttons):
         pos = pygame.mouse.get_pos()
         for button in buttons:
