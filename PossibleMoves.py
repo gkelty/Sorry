@@ -1,6 +1,4 @@
 from Board import Board
-from Pawn import Pawn
-from Card import Card, Deck
 """"
 Methods that score moves
 """
