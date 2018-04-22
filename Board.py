@@ -22,7 +22,7 @@ class Board:
         # tileAhead: key of next tile
         # tileBehind: key of previous tile
         # tileRight: key of tile to the right
-    tiles = {1: {'side': 1, 'specialType': 'startTile', 'pos': (422, 562), 'tileAhead': 2, 'tileBehind': 60, 'tileRight': 61},
+    tiles = {1: {'side': 1, 'specialType': 'startTile', 'pos': (422, 562), 'tileAhead': 2, 'tileBehind': 60, 'tileRight': None},
            2: {'side': 1, 'specialType': None, 'pos': (387, 562), 'tileAhead': 3, 'tileBehind': 1, 'tileRight': None},
            3: {'side': 1, 'specialType': None, 'pos': (352, 562), 'tileAhead': 4, 'tileBehind': 2, 'tileRight': None},
            4: {'side': 1, 'specialType': None, 'pos': (317, 562), 'tileAhead': 5, 'tileBehind': 3, 'tileRight': None},
@@ -37,7 +37,7 @@ class Board:
            13: {'side': 2, 'specialType': 'slide', 'pos': (37, 527), 'tileAhead': 14, 'tileBehind': 12, 'tileRight': None},
            14: {'side': 2, 'specialType': None, 'pos': (37, 492), 'tileAhead': 15, 'tileBehind': 13, 'tileRight': 65},
            15: {'side': 2, 'specialType': None, 'pos': (37, 457), 'tileAhead': 16, 'tileBehind': 14, 'tileRight': None},
-           16: {'side': 2, 'specialType': 'startTile', 'pos': (37, 422), 'tileAhead': 17, 'tileBehind': 15, 'tileRight': 62},
+           16: {'side': 2, 'specialType': 'startTile', 'pos': (37, 422), 'tileAhead': 17, 'tileBehind': 15, 'tileRight': None},
            17: {'side': 2, 'specialType': None, 'pos': (37, 387), 'tileAhead': 18, 'tileBehind': 16, 'tileRight': None},
            18: {'side': 2, 'specialType': None, 'pos': (37, 352), 'tileAhead': 19, 'tileBehind': 17, 'tileRight': None},
            19: {'side': 2, 'specialType': None, 'pos': (37, 317), 'tileAhead': 20, 'tileBehind': 18, 'tileRight': None},
@@ -52,7 +52,7 @@ class Board:
            28: {'side': 3, 'specialType': 'slide', 'pos': (72, 37), 'tileAhead': 29, 'tileBehind': 27, 'tileRight': None},
            29: {'side': 3, 'specialType': None, 'pos': (107, 37), 'tileAhead': 30, 'tileBehind': 28, 'tileRight': 71},
            30: {'side': 3, 'specialType': None, 'pos': (142, 37), 'tileAhead': 31, 'tileBehind': 29, 'tileRight': None},
-           31: {'side': 3, 'specialType': 'startTile', 'pos': (177, 37), 'tileAhead': 32, 'tileBehind': 30, 'tileRight': 63},
+           31: {'side': 3, 'specialType': 'startTile', 'pos': (177, 37), 'tileAhead': 32, 'tileBehind': 30, 'tileRight': None},
            32: {'side': 3, 'specialType': None, 'pos': (212, 37), 'tileAhead': 33, 'tileBehind': 31, 'tileRight': None},
            33: {'side': 3, 'specialType': None, 'pos': (247, 37), 'tileAhead': 34, 'tileBehind': 32, 'tileRight': None},
            34: {'side': 3, 'specialType': None, 'pos': (282, 37), 'tileAhead': 35, 'tileBehind': 33, 'tileRight': None},
@@ -67,7 +67,7 @@ class Board:
            43: {'side': 4, 'specialType': 'slide', 'pos': (562, 72), 'tileAhead': 44, 'tileBehind': 42, 'tileRight': None},
            44: {'side': 4, 'specialType': None, 'pos': (562, 107), 'tileAhead': 45, 'tileBehind': 43, 'tileRight': 77},
            45: {'side': 4, 'specialType': None, 'pos': (562, 142), 'tileAhead': 46, 'tileBehind': 44, 'tileRight': None},
-           46: {'side': 4, 'specialType': 'startTile', 'pos': (562, 177), 'tileAhead': 47, 'tileBehind': 45, 'tileRight': 64},
+           46: {'side': 4, 'specialType': 'startTile', 'pos': (562, 177), 'tileAhead': 47, 'tileBehind': 45, 'tileRight': None},
            47: {'side': 4, 'specialType': None, 'pos': (562, 212), 'tileAhead': 48, 'tileBehind': 46, 'tileRight': None},
            48: {'side': 4, 'specialType': None, 'pos': (562, 247), 'tileAhead': 49, 'tileBehind': 47, 'tileRight': None},
            49: {'side': 4, 'specialType': None, 'pos': (562, 282), 'tileAhead': 50, 'tileBehind': 48, 'tileRight': None},
@@ -121,7 +121,6 @@ class Board:
         self.bigCardLocation = (boardLocation[0] + Board.bigCardOffset[0],  boardLocation[1] + Board.bigCardOffset[1])
         self.pawns = []
         self.players = playersEnabled
-
         id = 0
         indexOffset = int(self.orientation / 90)
         for i in range(4):
@@ -131,6 +130,7 @@ class Board:
                     id += 1
                     self.pawns.append(Pawn(id, Pawn.colors[index], index+1, Board.startLocations[i]))
                                             #only rotate init colors to match board rotation, not startLocations
+        #self.currentPositions = []
         self.deck = Deck()
         self.deck.shuffle() 
         # self.boardButtons = []
@@ -142,16 +142,73 @@ class Board:
         #     boardBut = BoardButton(i,propLocX,propLocY)
         #     self.boardButtons.append(boardBut.createBoard())
 
+    def checkInStart(self, pawn):
+        inStart = False
+        if Board.tiles[pawn.tileName]['specialType'] == 'start':
+            inStart = True
+        return inStart
+
+    def checkOnStartTile(self, pawn):
+        onStartTile = False
+        if Board.tiles[pawn.tileName]['specialType'] == 'startTile':
+            onStartTile = True
+        return onStartTile
+
+    #This is only the outer track
+    def checkOnBoard(self, pawn):
+        onBoard = False
+        if Board.tiles[pawn.tileName]['specialType'] == None or Board.tiles[pawn.tileName]['specialType'] == 'startTile' or Board.tiles[pawn.tileName]['specialType'] == 'slide':
+            onBoard = True
+        return onBoard
+
+    def checkInSafety(self, pawn):
+        inSafety = False
+        if Board.tiles[pawn.tileName]['specialType'] == 'safety':
+            inSafety = True
+        return inSafety
+
+    def checkInHome(self, pawn):
+        inHome = False
+        if Board.tiles[pawn.tileName]['specialType'] == 'home':
+            inHome = True
+        return inHome
+
+    def getTargetTile(self, pawn, numberOfSpaces):
+        assert numberOfSpaces != 0
+        currentTile = pawn.tileName
+        newTile = None
+        direction = 1
+        if numberOfSpaces < 0:
+            value = abs(numberOfSpaces)
+            direction = -1
+        else:
+            value = numberOfSpaces
+        if self.checkOnBoard(pawn) or self.checkInSafety(pawn):
+            for i in range(value):
+                if direction == -1:
+                    newTile = Board.tiles[currentTile]['tileBehind']
+                elif Board.tiles[currentTile]['side'] != pawn.player:
+                    newTile = Board.tiles[currentTile]['tileAhead']
+                elif Board.tiles[currentTile]['tileRight'] == None:
+                    newTile = Board.tiles[currentTile]['tileAhead']
+                else:
+                    newTile = Board.tiles[currentTile]['tileRight']
+                if newTile == None:
+                    break
+                else:
+                    currentTile = newTile
+        return newTile
+
 
     #def returnBoard(self):
        # return(self.boardButtons)
+
     def displayBoard(self, screen):
         screen.blit(self.image, self.boardLocation)
         screen.blit(Board.boardCenterImage, self.boardLocation)
 
         #Blit current card on screen
         self.deck.displayDeck(screen, self.drawPileLocation, self.discardPileLocation, self.bigCardLocation)
-
 
         #Blit pawns on screen
         pawnsStartHome = {}
