@@ -114,16 +114,12 @@ class Button():
     over the button
     """
 
-<<<<<<< HEAD
-    def setButtonColor(self, color):
-        self.buttonColor = color
-=======
     def setButtonColor(self,screen, color):
         self.buttonColor = color
         self.surface.fill(color)
         self.surface.blit(self.txtSurf, self.txtRect)
         screen.blit(self.surface, self.rect)
->>>>>>> e6ef48a0099688202a198d9aded97f7693e2c972
+
 
     def getButtonColor(self):
         return self.buttonColor
@@ -145,9 +141,8 @@ class Button():
         pos = pygame.mouse.get_pos()
         if self.rect.collidepoint(pos):
             buttonColor = self.mouseoverColor
-<<<<<<< HEAD
-            self.setButtonColor(buttonColor)
-=======
+
+
             #self.setButtonColor(WHITE)
->>>>>>> e6ef48a0099688202a198d9aded97f7693e2c972
+
             self.callBack()
