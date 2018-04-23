@@ -16,6 +16,7 @@ class Button():
     The color of the button can change upon mouseover.
     """
     def __init__(self, text, location, action, actionArgs=[],
+                 name=0,
                  fontName="",
                  fontSize=16,
                  textColor=BLACK,
@@ -37,6 +38,7 @@ class Button():
             buttonColor: color of button, may change upon mouseover
             buttonSize: size of button
         """
+        self.name = name
         # Color and size of button
         self.buttonColor = buttonColor #the current button color
         self.color = buttonColor #the normal button color

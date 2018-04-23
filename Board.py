@@ -27,14 +27,14 @@ class Board:
            3: {'side': 1, 'specialType': None, 'pos': (352, 562), 'tileAhead': 4, 'tileBehind': 2, 'tileRight': None},
            4: {'side': 1, 'specialType': None, 'pos': (317, 562), 'tileAhead': 5, 'tileBehind': 3, 'tileRight': None},
            5: {'side': 1, 'specialType': None, 'pos': (282, 562), 'tileAhead': 6, 'tileBehind': 4, 'tileRight': None},
-           6: {'side': 1, 'specialType': 'slide', 'pos': (247, 562), 'tileAhead': 7, 'tileBehind': 5, 'tileRight': None},
+           6: {'side': 1, 'specialType': 'slide5', 'pos': (247, 562), 'tileAhead': 7, 'tileBehind': 5, 'tileRight': None},
            7: {'side': 1, 'specialType': None, 'pos': (212, 562), 'tileAhead': 8, 'tileBehind': 6, 'tileRight': None},
            8: {'side': 1, 'specialType': None, 'pos': (177, 562), 'tileAhead': 9, 'tileBehind': 7, 'tileRight': None},
            9: {'side': 1, 'specialType': None, 'pos': (142, 562), 'tileAhead': 10, 'tileBehind': 8, 'tileRight': None},
            10: {'side': 1, 'specialType': None, 'pos': (107, 562), 'tileAhead': 11, 'tileBehind': 9, 'tileRight': None},
            11: {'side': 1, 'specialType': None, 'pos': (72, 562), 'tileAhead': 12, 'tileBehind': 10, 'tileRight': None},
            12: {'side': 2, 'specialType': None, 'pos': (37, 562), 'tileAhead': 13, 'tileBehind': 11, 'tileRight': None},
-           13: {'side': 2, 'specialType': 'slide', 'pos': (37, 527), 'tileAhead': 14, 'tileBehind': 12, 'tileRight': None},
+           13: {'side': 2, 'specialType': 'slide4', 'pos': (37, 527), 'tileAhead': 14, 'tileBehind': 12, 'tileRight': None},
            14: {'side': 2, 'specialType': None, 'pos': (37, 492), 'tileAhead': 15, 'tileBehind': 13, 'tileRight': 65},
            15: {'side': 2, 'specialType': None, 'pos': (37, 457), 'tileAhead': 16, 'tileBehind': 14, 'tileRight': None},
            16: {'side': 2, 'specialType': 'startTile', 'pos': (37, 422), 'tileAhead': 17, 'tileBehind': 15, 'tileRight': None},
@@ -42,14 +42,14 @@ class Board:
            18: {'side': 2, 'specialType': None, 'pos': (37, 352), 'tileAhead': 19, 'tileBehind': 17, 'tileRight': None},
            19: {'side': 2, 'specialType': None, 'pos': (37, 317), 'tileAhead': 20, 'tileBehind': 18, 'tileRight': None},
            20: {'side': 2, 'specialType': None, 'pos': (37, 282), 'tileAhead': 21, 'tileBehind': 19, 'tileRight': None},
-           21: {'side': 2, 'specialType': 'slide', 'pos': (37, 247), 'tileAhead': 22, 'tileBehind': 20, 'tileRight': None},
+           21: {'side': 2, 'specialType': 'slide5', 'pos': (37, 247), 'tileAhead': 22, 'tileBehind': 20, 'tileRight': None},
            22: {'side': 2, 'specialType': None, 'pos': (37, 212), 'tileAhead': 23, 'tileBehind': 21, 'tileRight': None},
            23: {'side': 2, 'specialType': None, 'pos': (37, 177), 'tileAhead': 24, 'tileBehind': 22, 'tileRight': None},
            24: {'side': 2, 'specialType': None, 'pos': (37, 142), 'tileAhead': 25, 'tileBehind': 23, 'tileRight': None},
            25: {'side': 2, 'specialType': None, 'pos': (37, 107), 'tileAhead': 26, 'tileBehind': 24, 'tileRight': None},
            26: {'side': 2, 'specialType': None, 'pos': (37, 72), 'tileAhead': 27, 'tileBehind': 25, 'tileRight': None},
            27: {'side': 3, 'specialType': None, 'pos': (37, 37), 'tileAhead': 28, 'tileBehind': 26, 'tileRight': None},
-           28: {'side': 3, 'specialType': 'slide', 'pos': (72, 37), 'tileAhead': 29, 'tileBehind': 27, 'tileRight': None},
+           28: {'side': 3, 'specialType': 'slide4', 'pos': (72, 37), 'tileAhead': 29, 'tileBehind': 27, 'tileRight': None},
            29: {'side': 3, 'specialType': None, 'pos': (107, 37), 'tileAhead': 30, 'tileBehind': 28, 'tileRight': 71},
            30: {'side': 3, 'specialType': None, 'pos': (142, 37), 'tileAhead': 31, 'tileBehind': 29, 'tileRight': None},
            31: {'side': 3, 'specialType': 'startTile', 'pos': (177, 37), 'tileAhead': 32, 'tileBehind': 30, 'tileRight': None},
@@ -57,14 +57,14 @@ class Board:
            33: {'side': 3, 'specialType': None, 'pos': (247, 37), 'tileAhead': 34, 'tileBehind': 32, 'tileRight': None},
            34: {'side': 3, 'specialType': None, 'pos': (282, 37), 'tileAhead': 35, 'tileBehind': 33, 'tileRight': None},
            35: {'side': 3, 'specialType': None, 'pos': (317, 37), 'tileAhead': 36, 'tileBehind': 34, 'tileRight': None},
-           36: {'side': 3, 'specialType': 'slide', 'pos': (352, 37), 'tileAhead': 37, 'tileBehind': 35, 'tileRight': None},
+           36: {'side': 3, 'specialType': 'slide5', 'pos': (352, 37), 'tileAhead': 37, 'tileBehind': 35, 'tileRight': None},
            37: {'side': 3, 'specialType': None, 'pos': (387, 37), 'tileAhead': 38, 'tileBehind': 36, 'tileRight': None},
            38: {'side': 3, 'specialType': None, 'pos': (422, 37), 'tileAhead': 39, 'tileBehind': 37, 'tileRight': None},
            39: {'side': 3, 'specialType': None, 'pos': (457, 37), 'tileAhead': 40, 'tileBehind': 38, 'tileRight': None},
            40: {'side': 3, 'specialType': None, 'pos': (492, 37), 'tileAhead': 41, 'tileBehind': 39, 'tileRight': None},
            41: {'side': 3, 'specialType': None, 'pos': (527, 37), 'tileAhead': 42, 'tileBehind': 40, 'tileRight': None},
            42: {'side': 4, 'specialType': None, 'pos': (562, 37), 'tileAhead': 43, 'tileBehind': 41, 'tileRight': None},
-           43: {'side': 4, 'specialType': 'slide', 'pos': (562, 72), 'tileAhead': 44, 'tileBehind': 42, 'tileRight': None},
+           43: {'side': 4, 'specialType': 'slide4', 'pos': (562, 72), 'tileAhead': 44, 'tileBehind': 42, 'tileRight': None},
            44: {'side': 4, 'specialType': None, 'pos': (562, 107), 'tileAhead': 45, 'tileBehind': 43, 'tileRight': 77},
            45: {'side': 4, 'specialType': None, 'pos': (562, 142), 'tileAhead': 46, 'tileBehind': 44, 'tileRight': None},
            46: {'side': 4, 'specialType': 'startTile', 'pos': (562, 177), 'tileAhead': 47, 'tileBehind': 45, 'tileRight': None},
@@ -72,14 +72,14 @@ class Board:
            48: {'side': 4, 'specialType': None, 'pos': (562, 247), 'tileAhead': 49, 'tileBehind': 47, 'tileRight': None},
            49: {'side': 4, 'specialType': None, 'pos': (562, 282), 'tileAhead': 50, 'tileBehind': 48, 'tileRight': None},
            50: {'side': 4, 'specialType': None, 'pos': (562, 317), 'tileAhead': 51, 'tileBehind': 49, 'tileRight': None},
-           51: {'side': 4, 'specialType': 'slide', 'pos': (562, 352), 'tileAhead': 52, 'tileBehind': 50, 'tileRight': None},
+           51: {'side': 4, 'specialType': 'slide5', 'pos': (562, 352), 'tileAhead': 52, 'tileBehind': 50, 'tileRight': None},
            52: {'side': 4, 'specialType': None, 'pos': (562, 387), 'tileAhead': 53, 'tileBehind': 51, 'tileRight': None},
            53: {'side': 4, 'specialType': None, 'pos': (562, 422), 'tileAhead': 54, 'tileBehind': 52, 'tileRight': None},
            54: {'side': 4, 'specialType': None, 'pos': (562, 457), 'tileAhead': 55, 'tileBehind': 53, 'tileRight': None},
            55: {'side': 4, 'specialType': None, 'pos': (562, 492), 'tileAhead': 56, 'tileBehind': 54, 'tileRight': None},
            56: {'side': 4, 'specialType': None, 'pos': (562, 527), 'tileAhead': 57, 'tileBehind': 55, 'tileRight': None},
            57: {'side': 1, 'specialType': None, 'pos': (562, 562), 'tileAhead': 58, 'tileBehind': 56, 'tileRight': None},
-           58: {'side': 1, 'specialType': 'slide', 'pos': (527, 562), 'tileAhead': 59, 'tileBehind': 57, 'tileRight': None},
+           58: {'side': 1, 'specialType': 'slide4', 'pos': (527, 562), 'tileAhead': 59, 'tileBehind': 57, 'tileRight': None},
            59: {'side': 1, 'specialType': None, 'pos': (492, 562), 'tileAhead': 60, 'tileBehind': 58, 'tileRight': 83},
            60: {'side': 1, 'specialType': None, 'pos': (457, 562), 'tileAhead': 1, 'tileBehind': 59, 'tileRight': None},
            61: {'side': 1, 'specialType': 'start', 'pos': (422, 505), 'tileAhead': 1, 'tileBehind': None, 'tileRight': None},
@@ -121,6 +121,7 @@ class Board:
         self.bigCardLocation = (boardLocation[0] + Board.bigCardOffset[0],  boardLocation[1] + Board.bigCardOffset[1])
         self.pawns = []
         self.players = playersEnabled
+        self.currentPlayer = 1
         id = 0
         indexOffset = int(self.orientation / 90)
         for i in range(4):
@@ -157,7 +158,8 @@ class Board:
     #This is only the outer track
     def checkOnBoard(self, pawn):
         onBoard = False
-        if Board.tiles[pawn.tileName]['specialType'] == None or Board.tiles[pawn.tileName]['specialType'] == 'startTile' or Board.tiles[pawn.tileName]['specialType'] == 'slide':
+        if Board.tiles[pawn.tileName]['specialType'] == None or Board.tiles[pawn.tileName]['specialType'] == 'startTile' \
+                or Board.tiles[pawn.tileName]['specialType'] == 'slide4' or Board.tiles[pawn.tileName]['specialType'] == 'slide5':
             onBoard = True
         return onBoard
 
@@ -210,6 +212,7 @@ class Board:
         #Blit current card on screen
         self.deck.displayDeck(screen, self.drawPileLocation, self.discardPileLocation, self.bigCardLocation)
 
+    def displayPawns(self, screen):
         #Blit pawns on screen
         pawnsStartHome = {}
         for pawn in self.pawns:

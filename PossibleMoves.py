@@ -1,4 +1,5 @@
 from Board import Board
+
 """"
 Methods that score moves
 """
@@ -110,7 +111,7 @@ Card methods
 """
 def getValidPossibleMoves(board, player):
     possibleMoves = board.deck.currentCard.possibleMoves
-    print(possibleMoves)
+#    print(possibleMoves)
 
     validMoves = []
     for pawn in board.pawns:
@@ -119,7 +120,7 @@ def getValidPossibleMoves(board, player):
                 moveInvalid = False
                 if move['moveSpaces'] != 0:
                     newTile = board.getTargetTile(pawn, move['moveSpaces'])
-                    print(newTile)
+#                    print(newTile)
                     if newTile == None:
                         moveInvalid = True
                     elif board.tiles[newTile]['specialType'] == 'home':
