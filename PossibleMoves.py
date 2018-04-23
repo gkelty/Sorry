@@ -94,12 +94,6 @@ Methods that calculate the result of a move
 
 #def drawAgain():
 
-# def slide(currentPositions, pawn, lengthOfSlide):
-#     for i in range(lengthOfSlide):
-#         if currentPositions[pawn.pawnSpace + i] == otherPawn:
-#             sorryOther(pawnAt.currentPositions[pawn.pawnSpace + i])
-#         if currentPositions[pawn.pawnSpace + i] == ownPawn:
-#             sorrySelf(pawnAt.currentPositions[pawn.pawnSpace + i])
 
 #def sorryOtherPawn():
 
@@ -128,7 +122,7 @@ def getValidPossibleMoves(board, player):
                     else:
                         for otherPawn in board.pawns:
                             if otherPawn.tileName == newTile:
-                                if otherPawn.player == player: #change to player input
+                                if otherPawn.player == player:
                                     moveInvalid = True
                     if not moveInvalid:
                         validMoves.append([pawn, move, newTile])
@@ -140,7 +134,7 @@ def getValidPossibleMoves(board, player):
                         newTile = Board.tiles[pawn.tileName]['tileAhead']
                         for otherPawn in board.pawns:
                             if otherPawn.tileName == newTile:
-                                if otherPawn.player == player: # change to player input
+                                if otherPawn.player == player:
                                     moveInvalid = True
                     if not moveInvalid:
                         validMoves.append([pawn, move, newTile])
@@ -151,7 +145,7 @@ def getValidPossibleMoves(board, player):
                     else:
                         for otherPawn in board.pawns:
                             if board.checkOnBoard(otherPawn):
-                                if otherPawn.player == player: #use player input
+                                if otherPawn.player == player:
                                     moveInvalid = True
                                 else:
                                     newTile = otherPawn.tileName
@@ -166,7 +160,7 @@ def getValidPossibleMoves(board, player):
                     else:
                         for otherPawn in board.pawns:
                             if board.checkOnBoard(otherPawn):
-                                if otherPawn.player == player: # use player input
+                                if otherPawn.player == player:
                                     moveInvalid = True
                                 else:
                                     newTile = otherPawn.tileName
