@@ -1,7 +1,7 @@
 import pygame
 import random
 
-
+# color
 color = ["red","yellow","Green","Blue"]
 
 
