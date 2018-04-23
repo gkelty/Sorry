@@ -1,0 +1,25 @@
+
+Jumping/Bumping:
+What would a race be without a little jumping and bumping? You may jump over a pawn (yours or an opponents) that is in your path if you have sufficient movement points. However, two pawns can’t occupy the same spot on the board, so if you land on a space that contains another pawn, bump it back to it’s “START” space.
+Slide Zones:
+The Slide Zone looks like a thermometer with a triangle on the top. If at any time you land exactly on the triangle of a Slide Zone that does not match your pawn’s color, slide to the end of the Slide Zone, bumping off any tokens in your path.
+Safety Zones:
+Safety Zones look like Slide Zones, but they are larger. Only you may enter your Safety Zone. All normal rules apply. Note, you can’t move backwards into your safety zone, though you can exit a safety zone with a backwards move card. That pawn would be able to reenter the safety zone on a subsequent turn.
+Start Zone:
+One a 1 or a 2, move a pawn out of the “START” circle onto the first space beneath it ( a smaller circle at the end of a Slide Zone). Both a 1 and a 2 move the pawn onto the outer starting circle, but a 2 card allows the player to draw a second move card. Remember, two pawns may never occupy the same space, even the outer starting circle.
+
+
+
+The Cards:
+1—Move a pawn onto the outer starting circle, or move a pawn one space forward.
+2— Move a pawn onto the outer starting circle, or move a pawn two spaces forward. Draw again, even if you could not move a pawn.
+3—Move a pawn forward three spaces.
+4—Move a pawn backward four spaces.
+5—Move a pawn forward five spaces.
+7—Move a pawn forward seven spaces, or split the movement between two pawns. 7’s can’t be used to start a pawn. If a 7 is used to move on pawn home, the remainder of the movement total must be used exactly by another pawn or it is not a legal move.
+8— Move a pawn forward eight spaces.
+10—Move a pawn forward 10 spaces, or move a pawn backward one space.
+11—Move a pawn forward 11 spaces, or switch the position of any one of your pawns with any one of your opponents pawns. Note, you do not have to switch positions if there is no other legal play. This is the exception to the aforementioned rule. Also, you cannot switch with pawns in the “START”, “HOME”, or “SAFETY ZONE” areas. Remember to slide and bump if your switch lands you on the starting triangle of a Safety Zone.
+12—Move a pawn forward 12 spaces.
+Sorry!—
+Take one pawn from your “START” position and move it to any legal space occupied by an opponent (no “HOME”, “START”, or “SAFETY ZONE” spaces), and bump the opponent back to their “START” space. If you have no pawns in the “START” space, or there are no legal pawns to bump, end your turn.
