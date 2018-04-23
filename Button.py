@@ -16,6 +16,7 @@ class Button():
     The color of the button can change upon mouseover.
     """
     def __init__(self, text, location, action, actionArgs=[],
+                 name=0,
                  fontName="",
                  fontSize=16,
                  textColor=BLACK,
@@ -37,6 +38,7 @@ class Button():
             buttonColor: color of button, may change upon mouseover
             buttonSize: size of button
         """
+        self.name = name
         # Color and size of button
         self.buttonColor = buttonColor #the current button color
         self.color = buttonColor #the normal button color
@@ -112,8 +114,16 @@ class Button():
     over the button
     """
 
+<<<<<<< HEAD
     def setButtonColor(self, color):
         self.buttonColor = color
+=======
+    def setButtonColor(self,screen, color):
+        self.buttonColor = color
+        self.surface.fill(color)
+        self.surface.blit(self.txtSurf, self.txtRect)
+        screen.blit(self.surface, self.rect)
+>>>>>>> e6ef48a0099688202a198d9aded97f7693e2c972
 
     def getButtonColor(self):
         return self.buttonColor
@@ -135,5 +145,9 @@ class Button():
         pos = pygame.mouse.get_pos()
         if self.rect.collidepoint(pos):
             buttonColor = self.mouseoverColor
+<<<<<<< HEAD
             self.setButtonColor(buttonColor)
+=======
+            #self.setButtonColor(WHITE)
+>>>>>>> e6ef48a0099688202a198d9aded97f7693e2c972
             self.callBack()

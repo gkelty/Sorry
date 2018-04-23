@@ -9,7 +9,7 @@ BLACK = (0, 0, 0)
 screen = pygame.display.set_mode((1300, 650))
 #Board piece class, buttons that will numbered incrementally in gameboard class
 class boardPiece():
-    def __init__(self, txt, location, action, bg = WHITE, fg = BLACK, size = (35, 35), font_name = "Segoe Print", font_size = 16):
+    def __init__(self, txt = "Test", location = "0,0", action = "", bg = WHITE, fg = BLACK, size = (35, 35), font_name = "Segoe Print", font_size = 16):
         self.color = bg #the static (normal) color
         self.bg = bg #the actual background color, can change on mouseover
         self.fg = fg #text color
@@ -118,28 +118,31 @@ def test():
                     buttonId = boardPiece("Great!", (startCordx, startCordy), my_fantastic_function)
                     buttons.append(buttonId)
         #for i in range(0,16):
-        return(buttons)
-    button_01 = boardPiece("Great!",(60, 30),my_fantastic_function)
-    button_02 = boardPiece("Fantastic!", (220, 70), my_fantastic_function, bg=(50, 200, 20))
-    buttonMovementTest = boardPiece("Fantastic!", (200, 80),my_fantastic_function,bg=(50, 200, 20), size=(20, 20))
-    buttons = createBoard()
-    buttons.append(buttonMovementTest)
-    while True:
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                print(event.pos)
-                mousebuttondown(buttons)
-
+        displayBoard(buttons)
+    def displayBoard(buttons):
         for button in buttons:
             button.draw()
-
-        pygame.display.flip()
-        pygame.time.wait(100)
-
-def main():
-    test()
-main()
+#     button_01 = boardPiece("Great!",(60, 30),my_fantastic_function)
+#     button_02 = boardPiece("Fantastic!", (220, 70), my_fantastic_function, bg=(50, 200, 20))
+#     buttonMovementTest = boardPiece("Fantastic!", (200, 80),my_fantastic_function,bg=(50, 200, 20), size=(20, 20))
+#     #buttons = createBoard()
+#     #buttons.append(buttonMovementTest)
+#     while True:
+#
+#         for event in pygame.event.get():
+#             if event.type == pygame.QUIT:
+#                 pygame.quit()
+#                 sys.exit()
+#             elif event.type == pygame.MOUSEBUTTONDOWN:
+#                 print(event.pos)
+#                 mousebuttondown(buttons)
+#
+#         for button in buttons:
+#             button.draw()
+#
+#         pygame.display.flip()
+#         pygame.time.wait(100)
+#
+# def main():
+#     test()
+# main()
