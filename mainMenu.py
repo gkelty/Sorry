@@ -25,6 +25,7 @@ BLUE=(30,144,255)
 SCREEN = (115, 235, 220)
 
 #text sizes
+instructionText = pygame.font.Font('freesansbold.ttf', 14)
 smallText = pygame.font.Font('freesansbold.ttf', 20)
 mediumText = pygame.font.Font('freesansbold.ttf', 50)
 largeText = pygame.font.Font('freesansbold.ttf',115)
@@ -86,13 +87,12 @@ def intro():
         
 # creates display when the user decides to sign in. 
 def startPage(username):
-    
     screen = pygame.display.set_mode((displayWidth,displayHeight))
     screen.fill(SCREEN)
 
-    newGameButton = Button("New Game", (300,200), newGame, buttonColor = FORESTGREEN, buttonSize=(200,30))
+    newGameButton = Button("New Game", (300,200), newGame1, actionArgs=[username], buttonColor = FORESTGREEN, buttonSize=(200,30))
     resumeGameButton = Button("Resume Game", (300,250), resumeGame, buttonSize=(200,30),buttonColor = BLUE)
-    instructionsButton = Button("Instructions", (300,300), instructions, buttonSize=(200,30),buttonColor = DARKGREY)
+    instructionsButton = Button("Instructions", (300,300), instructions, actionArgs=[username], buttonSize=(200,30),buttonColor = DARKGREY)
     statsButton = Button("Game Statistics", (300,350), statsDisplay,actionArgs=[username], buttonSize=(200,30),buttonColor = BANANA)
     exitButton = Button("Exit", (300,400), exitGame, buttonSize=(200,30),buttonColor = RED)
 
@@ -101,7 +101,7 @@ def startPage(username):
 
     # start clock
     clock = pygame.time.Clock()
-
+    
     while True:
         
         for event in pygame.event.get():
@@ -127,13 +127,14 @@ def startPage(username):
 def statsDisplay(username):
     screen = pygame.display.set_mode((displayWidth,displayHeight))
     screen.fill(SCREEN)
-    
+
+    # create db connection
     dbConnect = dbConnection.connectDB()
+
+    # grab stats from db
     stats = dbConnection.getStats(dbConnect, username)
 
-    backButton = Button("Main Menu", (300,500), startPage, actionArgs=[username], buttonColor = FORESTGREEN, buttonSize=(200,30))
-    buttons = [backButton]
-
+    # create strings that will get drawn to screen and add to array
     gamesPlayed = ("Games Played: " + str(stats[0]))
     gamesInProgress = ("Games In Progress: " + str(stats[1]))
     totalWins = ("Total Wins: " + str(stats[2]))
@@ -141,6 +142,10 @@ def statsDisplay(username):
     totalKOs = ("Total KOs: " + str(stats[4]))
 
     statistics = [gamesPlayed, gamesInProgress, totalWins, totalLosses, totalKOs]
+
+    # create back button object
+    backButton = Button("Main Menu", (300,500), startPage, actionArgs=[username], buttonColor = FORESTGREEN, buttonSize=(200,30))
+    buttons = [backButton]
     
     clock = pygame.time.Clock()
     
@@ -175,13 +180,196 @@ def statsDisplay(username):
         pygame.display.update()
         clock.tick(30)
 
+def setColor(textObjects):
+    for txt in textObjects:       
+        print(txt.getText())
 
-def newGame():
-    print("start new game here")
+
+def newGame1(username):
+    
+    screen = pygame.display.set_mode((displayWidth,displayHeight))
+    screen.fill(SCREEN)
+
+    userColor = TextInputBox(250, 350, 140, 22)
+    numOfComps = TextInputBox(250, 235, 140, 22)
+
+    clock = pygame.time.Clock()
+
+
+    colorButton = Button("continue..", (300,500), newGame2, actionArgs=[username, numOfComps,userColor], buttonSize=(200,30),buttonColor = BLUE)
+    buttons = [colorButton]
+    while True:
+        
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                for button in buttons:
+                    Button.mouseButtonDown(button)                    
+
+                    userColor.updateEvent(event)
+                    numOfComps.updateEvent(event)
+
+            else:
+                userColor.updateEvent(event)
+                numOfComps.updateEvent(event)
+
+        screen.fill(SCREEN)
+
+        TextSurf, TextRect = text_objects(("New Game Setup"), mediumText)
+        TextRect.center = ((displayWidth/2),(displayHeight/7))
+        screen.blit(TextSurf, TextRect)
+
+        TextSurf, TextRect = text_objects(("Enter number of opponents (1-3): "), smallText)
+        TextRect.topleft = ((20),(displayHeight/3))
+        screen.blit(TextSurf, TextRect)
+
+        TextSurf, TextRect = text_objects(("Choose your color (Red, Green, Blue, Yellow):  "), smallText)
+        TextRect.topleft = ((20),(displayHeight/2))
+        screen.blit(TextSurf, TextRect)
+
+            
+        userColor.updateDisplay()
+        userColor.draw(screen)
+        numOfComps.updateDisplay()
+        numOfComps.draw(screen)
+
+        for button in buttons:
+            color = button.getButtonColor()
+            button.draw2(screen,color)
+
+        pygame.display.update()
+        clock.tick(30)
+def newGame2(username,numOfComps,userColor):
+    
+    # validate user input from newGame1
+    colors = ["red", "blue", "green", "yellow"]
+    userColor = userColor.getText().lower()
+    numOfComps = numOfComps.getText()
+    if userColor.isalpha() == False:
+        newGame1(username)
+    elif userColor not in colors:
+        newGame1(username)
+        
+    if numOfComps.isalpha():
+        newGame1(username)
+
+    numOfComps = int(numOfComps) + 1
+        
+    if numOfComps < 1 or numOfComps > 4:
+        newGame1(username)
+
+
+    # create new screen
+    screen = pygame.display.set_mode((displayWidth,displayHeight))
+    screen.fill(SCREEN)
+
+    clock = pygame.time.Clock()
+    
+    # add username and hardcode names of computer
+    names = [username, "Computer 1", "Computer 2", "Computer3"]
+
+    # create textbox objects
+    textObjects = []
+    height = 190
+    for i in range(0,numOfComps):
+        behavior = TextInputBox(140, height, 50, 22)
+        intelligence = TextInputBox(370, height, 50, 22)
+        height += 100
+        textObjects.append(behavior)
+        textObjects.append(intelligence)
+        
+    # create button object
+    colorButton = Button("set", (300,550), setColor, actionArgs=[textObjects], buttonSize=(200,30),buttonColor = BLUE)
+    buttons = [colorButton]
+    while True:
+        
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                for button in buttons:
+                    Button.mouseButtonDown(button)
+                    
+                for txt in textObjects:
+                    txt.updateEvent(event)
+
+            else:
+                for txt in textObjects:
+                    txt.updateEvent(event)
+        screen.fill(SCREEN)
+
+        # create title for page
+        TextSurf, TextRect = text_objects(("New Game Setup"), mediumText)
+        TextRect.center = ((displayWidth/2),(displayHeight/7))
+        screen.blit(TextSurf, TextRect)
+
+        # depending on number of computer opponents the user pics, display the names
+        height = displayHeight/3
+        for name in range(0,numOfComps):
+            TextSurf, TextRect = text_objects((names[name] + ":"), smallText)
+            TextRect.center = ((displayWidth/6 - 35),(height))
+            screen.blit(TextSurf, TextRect)
+            height += 100
+
+        # draw the textboxes
+        for i in range(0,numOfComps*2):
+            textObjects[i].updateDisplay()
+            textObjects[i].draw(screen)
+##            color2.updateDisplay()
+##            color2.draw(screen)
+
+        # draw the buttons
+        for button in buttons:
+            color = button.getButtonColor()
+            button.draw2(screen,color)
+
+        pygame.display.update()
+        clock.tick(30)
+
 def resumeGame():
     print("resume game")
-def instructions():
-    print("print instructions")
+
+    
+def instructions(username):
+    screen = pygame.display.set_mode((displayWidth,displayHeight))
+    screen.fill(SCREEN)
+
+    backButton = Button("Main Menu", (300,500), startPage, actionArgs=[username], buttonColor = FORESTGREEN, buttonSize=(200,30))
+    buttons = [backButton]
+    while True:
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                for button in buttons:
+                    Button.mouseButtonDown(backButton)
+                    
+        # Display title text object
+        titleSurf, titleRect = text_objects(("Instructions:"), mediumText)
+        titleRect.center = ((displayWidth/2),(displayHeight/5))
+        screen.blit(titleSurf, titleRect)
+    
+        infile = open("instructionText.txt", 'r')
+        instructions = []
+        for line in infile:
+            instructions.append(line)
+
+        height = (displayHeight/2 - 100)
+        for instruction in instructions:
+                Surf, Rect = text_objects((instruction), instructionText)
+                Rect.topleft = ((20),(height))
+                screen.blit(Surf, Rect)
+                height += 25
+
+        backButton.draw(screen)
+        pygame.display.update()
 
 def exitGame():
     print("Game Quit")
