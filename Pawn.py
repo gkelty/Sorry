@@ -14,6 +14,7 @@ class Pawn:
         self.tileName = tileName    # This is tiles dictionary key to look up tile attributes (found in board class)
         self.image = Pawn.pawnImages[color]
 
+
     def getPawnImage(self):
         return self.image
 
