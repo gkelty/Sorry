@@ -105,8 +105,6 @@ Card methods
 """
 def getValidPossibleMoves(board, player):
     possibleMoves = board.deck.currentCard.possibleMoves
-#    print(possibleMoves)
-
     validMoves = []
     for pawn in board.pawns:
         if pawn.player == player:
@@ -114,7 +112,6 @@ def getValidPossibleMoves(board, player):
                 moveInvalid = False
                 if move['moveSpaces'] != 0:
                     newTile = board.getTargetTile(pawn, move['moveSpaces'])
-#                    print(newTile)
                     if newTile == None:
                         moveInvalid = True
                     elif board.tiles[newTile]['specialType'] == 'home':
@@ -184,11 +181,10 @@ def main():
     pawnLocations = [61, 1, 3, 12, 4, 5, 6, 7, 8, 9, 10, 63, 64, 64, 64, 64]
     for pawn in board.pawns:
         pawn.tileName = pawnLocations[pawn.name-1]
-        print(pawn.name, pawn.tileName)
 
-    board.deck.showCards()
+#    board.deck.showCards()
     board.deck.drawCard()
     player = 1
     validMoves = getValidPossibleMoves(board, player)
-    print(validMoves)
+#    print(validMoves)
 main()

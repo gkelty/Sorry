@@ -18,7 +18,7 @@ clock = pygame.time.Clock()
 board = Board(boardOrientation=0, boardLocation=(350, 0))
 
 # Print the order of the shuffled deck (top card listed last) for testing purposes
-board.deck.showCards()
+#board.deck.showCards()
 
 # Define additional button colors (beyond white, grey, black)
 TRANSPARENT = (0, 0, 0, 0)
@@ -47,7 +47,7 @@ def tileButtonHandler(tileName):
         movePawnToPosition(buttons, tileName)
 
 def deactivateAllTileButtons(buttons):
-    print("deactivate")
+#    print("deactivate")
     for button in buttons:
         if 0 < button.name < 89:
             button.active = False
@@ -89,16 +89,13 @@ def movePawnToPosition(buttons, tileName):
     activePawn.tileName = tileName
     for otherPawn in board.pawns:
         if otherPawn.player != board.currentPlayer:
-            print("other pawn", otherPawn.tileName)
             if otherPawn.tileName == tileName:
                 sorryPawn(board, otherPawn)
-    print(board.tiles[activePawn.tileName]['specialType'])
     if board.tiles[activePawn.tileName]['specialType'] == 'slide4':
         slide(board, activePawn, 4)
     elif board.tiles[activePawn.tileName]['specialType'] == 'slide5':
         slide(board, activePawn, 5)
     activePawn = None
-    print(board.deck.currentCard.value)
     if board.deck.currentCard.value == '2':
         board.deck.discardCard()
     else:
@@ -110,9 +107,7 @@ def slide(board, pawn, lengthOfSlide):
     currentTile = pawn.tileName
     for i in range(lengthOfSlide-1):
         newTile = board.tiles[currentTile]['tileAhead']
-        print("new tile", newTile)
         for otherPawn in board.pawns:
-            print("other pawn", otherPawn.tileName)
             if otherPawn.tileName == newTile:
                 if otherPawn.player == board.currentPlayer:
                     sorryPawn(board, otherPawn)
@@ -127,7 +122,6 @@ def sorryPawn(board, pawn):
     for num in startNumbers:
         if board.tiles[num]['side'] == pawn.player:
             newTile = num
-    print("start?", newTile)
     pawn.tileName = newTile
 
 def endTurn():
