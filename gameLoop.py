@@ -3,6 +3,7 @@ from TextInputBox import TextInputBox
 from dbConnection import dbConnection
 from Board import Board
 from boardButton import BoardButton
+import mainMenu
 import PossibleMoves
 import pygame
 import pygame.locals as pl
@@ -24,6 +25,9 @@ yellow = 0
 green = 90
 red = 180
 blue = 270
+ 
+behaviorChoices = ["mean","nice"]
+intelligenceChoices = ["smart","dumb"]
 
 colors= { "yellow": 0,
           "green": 90,
@@ -38,7 +42,7 @@ validMoves = []
 activePawn = None
 playState = 0
 
-def main(textObjects, numOfComps, userColor):
+def main(textObjects, numOfComps, userColor, username):
     
     buttons = []
 
@@ -129,12 +133,50 @@ def main(textObjects, numOfComps, userColor):
         playState = 0
         return None
 
-    
+   
+            
 #################### END OF FUNCTIONS ###########################
+
+    behaviorArray = []
+    intelligenceArray = []
+    newTxtObject = []
+    
+    # validate computer setting input
+    for txt in textObjects:
+        txt = txt.getText()
+        newTxtObject.append(txt)
+
+    #print(newTxtObject)
+
+    for i in range(0,len(newTxtObject)):
+        if i % 2 == 0:
+            
+            behaviorArray.append(newTxtObject[i])
+
+        else:
+            
+            intelligenceArray.append(newTxtObject[i])
+        
+##    print(behaviorArray)
+##    print(intelligenceArray)
+                        
+                    
+    for b in behaviorArray:
+##        print(b)
+        if b not in behaviorChoices:
+            mainMenu.newGame2(username, numOfComps, userColor)
+            
+    for i in intelligenceArray:
+##        print(i)
+        if i not in intelligenceChoices:
+            mainMenu.newGame2(username, numOfComps, userColor)
+        
+
     
     # Create screen and initialize clock
     screen = pygame.display.set_mode((1000, 600))
     clock = pygame.time.Clock()
+
 
     # Create new board and shuffled deck
     if numOfComps == 3:
@@ -143,9 +185,13 @@ def main(textObjects, numOfComps, userColor):
             board = Board(boardOrientation=color, boardLocation=(350, 0))
 
     if numOfComps == 2:
-        board = Board(boardOrientation=0, boardLocation=(350, 0), playersEnabled=[True, True, True, False] )
+        for c in colors:
+            color =  colors[userColor]
+            board = Board(boardOrientation=color, boardLocation=(350, 0), playersEnabled=[True, True, True, False] )
     if numOfComps == 1:
-        board = Board(boardOrientation=0, boardLocation=(350, 0), playersEnabled=[True, True, False, False] )
+        for c in colors:
+            color =  colors[userColor]
+            board = Board(boardOrientation=color, boardLocation=(350, 0), playersEnabled=[True, True, False, False] )
 
     # Print the order of the shuffled deck (top card listed last) for testing purposes
     board.deck.showCards()
@@ -173,21 +219,9 @@ def main(textObjects, numOfComps, userColor):
     turnDone = Button("End Turn", (260, 150), endTurn, actionArgs=[board],
                     buttonColor=GREEN, buttonSize = (100,30), active=False)
 
-    #moveForwardOne = Button("Move Forward", (260, 250), moveForwardOne,
-    #                    buttonColor=GREEN, buttonSize = (100,30))
-
-    #moveForwardAll = Button("MoveForward2", (260, 350), moveForwardAll,
-    #                        buttonColor=GREEN, buttonSize=(100, 30))
-
-    # Put button in a list for simpler game loop
     buttons.append(drawPile)
     buttons.append(turnDone)
-    #buttons.append(moveForwardOne)
-    #buttons.append(moveForwardAll)
 
-    #for i in range(0,len(boardButtons)):
-    #  buttons.append(boardButtons[i])
-    # Example game loop
     while True:
         screen.fill((225, 225, 225))
         for event in pygame.event.get():
