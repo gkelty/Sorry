@@ -36,7 +36,6 @@ playState = 0
 validMoves = []
 activePawn = None
 
-
 # Button handler
 def tileButtonHandler(tileName):
     if playState == 1:
@@ -52,7 +51,6 @@ def deactivateAllTileButtons(buttons):
         if 0 < button.name < 89:
             button.active = False
 
-
 def displayPawnsWithValidMoves(validMoves, buttons):
     global playState
     deactivateAllTileButtons(buttons)
@@ -65,7 +63,6 @@ def displayPawnsWithValidMoves(validMoves, buttons):
                 break
     playState = 1
     return None
-
 
 def displayValidMovesForPawn(validMoves, buttons, tileName):
     global playState
@@ -86,15 +83,20 @@ def movePawnToPosition(buttons, tileName):
     global playState
     global activePawn
     deactivateAllTileButtons(buttons)
+    oldTile = activePawn.tileName
     activePawn.tileName = tileName
     for otherPawn in board.pawns:
         if otherPawn.player != board.currentPlayer:
             if otherPawn.tileName == tileName:
-                sorryPawn(board, otherPawn)
-    if board.tiles[activePawn.tileName]['specialType'] == 'slide4':
-        slide(board, activePawn, 4)
-    elif board.tiles[activePawn.tileName]['specialType'] == 'slide5':
-        slide(board, activePawn, 5)
+                if board.deck.currentCard.value == '11':
+                    otherPawn.tileName = oldTile
+                else:
+                    sorryPawn(board, otherPawn)
+    if board.tiles[activePawn.tileName]['side'] != board.currentPlayer:
+        if board.tiles[activePawn.tileName]['specialType'] == 'slide4':
+            slide(board, activePawn, 4)
+        elif board.tiles[activePawn.tileName]['specialType'] == 'slide5':
+            slide(board, activePawn, 5)
     activePawn = None
     if board.deck.currentCard.value == '2':
         board.deck.discardCard()

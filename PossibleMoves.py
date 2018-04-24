@@ -110,6 +110,7 @@ def getValidPossibleMoves(board, player):
         if pawn.player == player:
             for move in possibleMoves:
                 moveInvalid = False
+
                 if move['moveSpaces'] != 0:
                     newTile = board.getTargetTile(pawn, move['moveSpaces'])
                     if newTile == None:
@@ -124,8 +125,8 @@ def getValidPossibleMoves(board, player):
                     if not moveInvalid:
                         validMoves.append([pawn, move, newTile])
 
-                if move['moveFromStart'] == True:
-                    if board.checkInStart(pawn) == False:
+                if move['moveFromStart']:
+                    if not board.checkInStart(pawn):
                         moveInvalid = True
                     else:
                         newTile = Board.tiles[pawn.tileName]['tileAhead']
@@ -136,9 +137,10 @@ def getValidPossibleMoves(board, player):
                     if not moveInvalid:
                         validMoves.append([pawn, move, newTile])
 
-                if move['switchSpace'] == True:
-                    if board.checkOnBoard(pawn) == False and board.checkInSafety(pawn) == False:
-                        moveInvalid = True
+                if move['switchSpace']:
+                    if not board.checkOnBoard(pawn):
+                        if not board.checkInSafety(pawn):
+                            moveInvalid = True
                     else:
                         for otherPawn in board.pawns:
                             if board.checkOnBoard(otherPawn):
@@ -146,13 +148,12 @@ def getValidPossibleMoves(board, player):
                                     moveInvalid = True
                                 else:
                                     newTile = otherPawn.tileName
+                                    validMoves.append([pawn, move, newTile])
                             else:
                                 moveInvalid = True
-                            if not moveInvalid:
-                                validMoves.append([pawn, move, newTile])
 
-                if move['sorryCard'] == True:
-                    if board.checkInStart(pawn) == False:
+                if move['sorryCard']:
+                    if not board.checkInStart(pawn):
                         moveInvalid = True
                     else:
                         for otherPawn in board.pawns:
@@ -161,10 +162,9 @@ def getValidPossibleMoves(board, player):
                                     moveInvalid = True
                                 else:
                                     newTile = otherPawn.tileName
+                                    validMoves.append([pawn, move, newTile])
                             else:
                                 moveInvalid = True
-                            if not moveInvalid:
-                                validMoves.append([pawn, move, newTile])
     return validMoves
 
 

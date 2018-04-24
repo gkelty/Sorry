@@ -91,25 +91,25 @@ class Board:
            67: {'side': 2, 'specialType': 'safety', 'pos': (142, 492), 'tileAhead': 68, 'tileBehind': 66, 'tileRight': None},
            68: {'side': 2, 'specialType': 'safety', 'pos': (177, 492), 'tileAhead': 69, 'tileBehind': 67, 'tileRight': None},
            69: {'side': 2, 'specialType': 'safety', 'pos': (212, 492), 'tileAhead': 70, 'tileBehind': 68, 'tileRight': None},
-           70: {'side': 2, 'specialType': 'home', 'pos': (270, 492), 'tileAhead': None, 'tileBehind': 69, 'tileRight': None},
+           70: {'side': 2, 'specialType': 'home', 'pos': (270, 492), 'tileAhead': None, 'tileBehind': None, 'tileRight': None},
            71: {'side': 3, 'specialType': 'safety', 'pos': (107, 72), 'tileAhead': 72, 'tileBehind': 29, 'tileRight': None},
            72: {'side': 3, 'specialType': 'safety', 'pos': (107, 107), 'tileAhead': 73, 'tileBehind': 71, 'tileRight': None},
            73: {'side': 3, 'specialType': 'safety', 'pos': (107, 142), 'tileAhead': 74, 'tileBehind': 72, 'tileRight': None},
            74: {'side': 3, 'specialType': 'safety', 'pos': (107, 177), 'tileAhead': 75, 'tileBehind': 73, 'tileRight': None},
            75: {'side': 3, 'specialType': 'safety', 'pos': (107, 212), 'tileAhead': 76, 'tileBehind': 74, 'tileRight': None},
-           76: {'side': 3, 'specialType': 'home', 'pos': (108, 270), 'tileAhead': None, 'tileBehind': 75, 'tileRight': None},
+           76: {'side': 3, 'specialType': 'home', 'pos': (108, 270), 'tileAhead': None, 'tileBehind': None, 'tileRight': None},
            77: {'side': 4, 'specialType': 'safety', 'pos': (527, 107), 'tileAhead': 78, 'tileBehind': 44, 'tileRight': None},
            78: {'side': 4, 'specialType': 'safety', 'pos': (492, 107), 'tileAhead': 79, 'tileBehind': 77, 'tileRight': None},
            79: {'side': 4, 'specialType': 'safety', 'pos': (457, 107), 'tileAhead': 80, 'tileBehind': 78, 'tileRight': None},
            80: {'side': 4, 'specialType': 'safety', 'pos': (422, 107), 'tileAhead': 81, 'tileBehind': 79, 'tileRight': None},
            81: {'side': 4, 'specialType': 'safety', 'pos': (387, 107), 'tileAhead': 82, 'tileBehind': 80, 'tileRight': None},
-           82: {'side': 4, 'specialType': 'home', 'pos': (331, 107), 'tileAhead': None, 'tileBehind': 81, 'tileRight': None},
+           82: {'side': 4, 'specialType': 'home', 'pos': (331, 107), 'tileAhead': None, 'tileBehind': None, 'tileRight': None},
            83: {'side': 1, 'specialType': 'safety', 'pos': (492, 527), 'tileAhead': 84, 'tileBehind': 59, 'tileRight': None},
            84: {'side': 1, 'specialType': 'safety', 'pos': (492, 492), 'tileAhead': 85, 'tileBehind': 83, 'tileRight': None},
            85: {'side': 1, 'specialType': 'safety', 'pos': (492, 457), 'tileAhead': 86, 'tileBehind': 84, 'tileRight': None},
            86: {'side': 1, 'specialType': 'safety', 'pos': (492, 422), 'tileAhead': 87, 'tileBehind': 85, 'tileRight': None},
            87: {'side': 1, 'specialType': 'safety', 'pos': (492, 387), 'tileAhead': 88, 'tileBehind': 86, 'tileRight': None},
-           88: {'side': 1, 'specialType': 'home', 'pos': (493, 331), 'tileAhead': None, 'tileBehind': 87, 'tileRight': None}}
+           88: {'side': 1, 'specialType': 'home', 'pos': (493, 331), 'tileAhead': None, 'tileBehind': None, 'tileRight': None}}
 
     def __init__(self, boardOrientation, boardLocation=(350, 0), playersEnabled=[True, True, True, True]):
         self.orientation = boardOrientation # degrees of orientation off of yellow on bottom
