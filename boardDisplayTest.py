@@ -37,14 +37,7 @@ validMoves = []
 activePawn = None
 
 
-# Button handler
-def tileButtonHandler(tileName):
-    if playState == 1:
-        #send to function that does logic for displaying moves
-        displayValidMovesForPawn(validMoves, buttons, tileName)
-    elif playState == 2:
-        #send to function that moves pawn to new space (including handling slides), discard card, increment player, next player's turn
-        movePawnToPosition(buttons, tileName)
+
 
 def deactivateAllTileButtons(buttons):
     print("deactivate")
@@ -154,6 +147,8 @@ def movePawn():
     print("Moved")
     board.pawns[0].tileName = int(button.getBoardButton())
     return None
+
+####### from here down, make main loop ###########
 buttons = []
 for i in range(1, 89):
     propLocX = board.tiles[i]['pos'][0]

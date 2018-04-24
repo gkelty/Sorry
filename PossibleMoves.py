@@ -191,4 +191,4 @@ def main():
     player = 1
     validMoves = getValidPossibleMoves(board, player)
     print(validMoves)
-main()
+#main()

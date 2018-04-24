@@ -1,6 +1,7 @@
 from Button import Button
 from TextInputBox import TextInputBox
 from dbConnection import dbConnection
+from gameLoop import main
 import pygame
 import pygame.locals as pl
 import sys
@@ -256,9 +257,9 @@ def newGame2(username,numOfComps,userColor):
     if numOfComps.isalpha():
         newGame1(username)
 
-    numOfComps = int(numOfComps) + 1
+    numOfComps = int(numOfComps)
         
-    if numOfComps < 1 or numOfComps > 4:
+    if numOfComps < 1 or numOfComps > 3:
         newGame1(username)
 
 
@@ -268,12 +269,14 @@ def newGame2(username,numOfComps,userColor):
 
     clock = pygame.time.Clock()
     
-    # add username and hardcode names of computer
+    # hardcode names of computer
     names = [username, "Computer 1", "Computer 2", "Computer3"]
 
     # create textbox objects
     textObjects = []
-    height = 190
+    height = 290
+
+    
     for i in range(0,numOfComps):
         behavior = TextInputBox(140, height, 50, 22)
         intelligence = TextInputBox(370, height, 50, 22)
@@ -282,7 +285,7 @@ def newGame2(username,numOfComps,userColor):
         textObjects.append(intelligence)
         
     # create button object
-    colorButton = Button("set", (300,550), setColor, actionArgs=[textObjects], buttonSize=(200,30),buttonColor = BLUE)
+    colorButton = Button("set", (300,550), main, actionArgs=[textObjects, numOfComps, userColor], buttonSize=(200,30),buttonColor = BLUE)
     buttons = [colorButton]
     while True:
         
@@ -310,18 +313,17 @@ def newGame2(username,numOfComps,userColor):
 
         # depending on number of computer opponents the user pics, display the names
         height = displayHeight/3
-        for name in range(0,numOfComps):
+        for name in range(0,numOfComps + 1):
             TextSurf, TextRect = text_objects((names[name] + ":"), smallText)
             TextRect.center = ((displayWidth/6 - 35),(height))
             screen.blit(TextSurf, TextRect)
             height += 100
 
         # draw the textboxes
-        for i in range(0,numOfComps*2):
+        for i in range(0,(numOfComps)*2):
             textObjects[i].updateDisplay()
             textObjects[i].draw(screen)
-##            color2.updateDisplay()
-##            color2.draw(screen)
+
 
         # draw the buttons
         for button in buttons:
