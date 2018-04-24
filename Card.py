@@ -52,6 +52,7 @@ This class contains information to create and manipulate a deck of cards and dis
 class Deck:
     drawPileImage = Image.getImage('images\sorryCardBackSmall.png')
     values = ["1", "2", "3", "4", "5", "7", "8", "10", "11", "12", "S"]
+    discards = []
 
     def __init__(self):
         self.cards = []
@@ -71,15 +72,25 @@ class Deck:
         random.shuffle(self.cards)
 
     def drawCard(self):
+        if(not self.cards):
+           # print("is here")
+            self.reShuffle()
+
         self.currentCard = self.cards.pop()
+        self.discards.append(self.currentCard)
+        #print(self.currentCard.value)
         if len(self.cards) == 0:
-            self.drawPileActive = False
+            self.drawPileActive = True
         return self.drawPileActive
 
     def discardCard(self):
         if self.currentCard != None:
             self.discard = pygame.transform.rotozoom(self.currentCard.getCardImage(), 90, 0.3)
         self.currentCard = None
+    def reShuffle(self):
+        #print("and also here")
+        random.shuffle(self.discards)
+        self.cards = self.discards
 
 
     def displayDeck(self, screen, drawPileLocation, discardPileLocation, bigCardLocation):
