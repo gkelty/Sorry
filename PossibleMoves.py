@@ -99,10 +99,11 @@ Methods that calculate the result of a move
 
 #def sorryOwnPawn():
 
+def rankingMoves(validMoves):
+    bestMoves = []
+    if(validMoves[1][1]==True):
+        print("Nice")
 
-"""
-Card methods
-"""
 def getValidPossibleMoves(board, player):
     possibleMoves = board.deck.currentCard.possibleMoves
     validMoves = []
@@ -187,8 +188,9 @@ def main():
     player = 1
     validMoves = getValidPossibleMoves(board, player)
 
+
     print(validMoves)
-#main()
+#main(
 
 #    print(validMoves)
 main()
