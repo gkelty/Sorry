@@ -104,9 +104,10 @@ def main(textObjects, numOfComps, userColor, username):
         elif playState == 2:
             #send to function that moves pawn to new space (including handling slides), discard card, increment player, next player's turn
             movePawnToPosition(buttons, tileName)
-    def endTurn(board):
+    def endTurn(board, numPlayers):
         board.deck.discardCard()
-        board.currentPlayer = board.currentPlayer%4 + 1
+        board.currentPlayer = board.currentPlayer%numPlayers + 1
+        print("Current Player: " ,board.currentPlayer)
 
     
     def movePawnToPosition(buttons, tileName):
@@ -129,7 +130,7 @@ def main(textObjects, numOfComps, userColor, username):
         if board.deck.currentCard.value == '2':
             board.deck.discardCard()
         else:
-            endTurn(board)
+            endTurn(board, numOfComps+1)
         playState = 0
         return None
 
@@ -216,7 +217,7 @@ def main(textObjects, numOfComps, userColor, username):
     drawPile = Button("Draw Card", (650, 250), board.deck.drawCard,
                     buttonColor=TRANSPARENT, backgroundColor=TRANSPARENT, buttonSize = (75,45))
 
-    turnDone = Button("End Turn", (260, 150), endTurn, actionArgs=[board],
+    turnDone = Button("End Turn", (260, 150), endTurn, actionArgs=[board, numOfComps+1],
                     buttonColor=GREEN, buttonSize = (100,30), active=False)
 
     buttons.append(drawPile)

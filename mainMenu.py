@@ -221,9 +221,7 @@ def newGame1(username):
         
         screen.fill(SCREEN)
 
-                    
-
-
+                
         TextSurf, TextRect = text_objects(("New Game Setup"), mediumText)
         TextRect.center = ((displayWidth/2),(displayHeight/7))
         screen.blit(TextSurf, TextRect)
@@ -283,13 +281,13 @@ def newGame2(username,numOfComps,userColor):
 
     # create textbox objects
     textObjects = []
-    height = 290
+    height = 265
 
     
     for i in range(0,numOfComps):
         behavior = TextInputBox(140, height, 50, 22)
         intelligence = TextInputBox(370, height, 50, 22)
-        height += 100
+        height += 75
         textObjects.append(behavior)
         textObjects.append(intelligence)
         
@@ -328,7 +326,7 @@ def newGame2(username,numOfComps,userColor):
             TextSurf, TextRect = text_objects((names[name] + ":"), smallText)
             TextRect.center = ((displayWidth/6 - 35),(height))
             screen.blit(TextSurf, TextRect)
-            height += 100
+            height += 75
 
         # draw the textboxes
         for i in range(0,(numOfComps)*2):
