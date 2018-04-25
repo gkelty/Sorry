@@ -234,7 +234,7 @@ class Board:
 
     def displayColor(self, screen):
         myfont = pygame.font.SysFont('freesans.ttf', 30)
-        mode = 2  # mode 1: play against computer, mode 2: play with friends -- pass this value in to this function
+        mode = 1  # mode 1: play against computer, mode 2: play with friends -- pass this value in to this function
         if mode == 1:
             if self.currentPlayer == 1:
                 turnMessage = "It's your turn!"
@@ -246,18 +246,29 @@ class Board:
         screen.blit(textsurface, (100, 300))
 
     def getInstructions(self, validMoves, playState):
-        mode = 2        # mode 1: play against computer, mode 2: play with friends -- pass this value in to this function
+        mode = 1        # mode 1: play against computer, mode 2: play with friends -- pass this value in to this function
         instructions = []
         if mode == 1:
             if self.currentPlayer != 1:
                 instructions = ["Please wait..."]
             else:
                 if self.deck.currentCard == None:
-                    instructions = ["Click on the draw pile to select a card."]
+                    if validMoves == []:
+                        instructions = ["Click on the draw pile to select a card."]
+                    else:
+                        for move in validMoves:
+                            if move[1]['drawAgain']:
+                                instructions = ["You get to draw again.", "Click on the draw pile to select a card."]
+                            else:
+                                instructions = ["Click on the draw pile to select a card."]
+
                 elif validMoves == []:
                     instructions = ["You cannot move.", "Click the End Turn button."]
                 elif validMoves != []:
-                    instructions = ["Click on a pawn to see its possible moves."]
+                    if playState == 1:
+                        instructions = ["Click on a highlighted pawn", "to see its possible moves."]
+                    elif playState == 2:
+                        instructions = ["Click on a highlighted space", "to move the pawn there."]
         if mode == 2:
             if self.deck.currentCard == None:
                 if validMoves == []:
