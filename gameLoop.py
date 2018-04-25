@@ -173,12 +173,10 @@ def main(textObjects, numOfComps, userColor, username):
 
                                            
     for b in behaviorArray:
-##        print(b)
         if b not in behaviorChoices:
             mainMenu.newGame2(username, numOfComps, userColor, False)
             
     for i in intelligenceArray:
-##        print(i)
         if i not in intelligenceChoices:
             mainMenu.newGame2(username, numOfComps, userColor, False)
         
