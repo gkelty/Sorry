@@ -131,6 +131,7 @@ def endTurn():
     board.currentPlayer = board.currentPlayer%4 + 1
 
 
+
 # Checks tile locations around the outside track
 def moveForwardOne():
     tileName = board.pawns[0].tileName
@@ -165,7 +166,7 @@ for i in range(1, 89):
 drawPile = Button("Draw Card", (650, 250), board.deck.drawCard,
                     buttonColor=TRANSPARENT, backgroundColor=TRANSPARENT, buttonSize = (75,45))
 
-turnDone = Button("End Turn", (260, 150), endTurn,
+turnDone = Button("End Turn", (175, 575), endTurn,
                     buttonColor=GREEN, buttonSize = (100,30), active=False)
 
 #moveForwardOne = Button("Move Forward", (260, 250), moveForwardOne,
@@ -194,8 +195,9 @@ while True:
                 button.mouseButtonDown()
 
     # Blit board and cards to screen
-    board.displayBoard(screen)
+    board.displayBoard(screen, board)
 
+    board.displayColor(screen)
 
     # Blit buttons on screen
     for button in buttons:
@@ -219,6 +221,9 @@ while True:
     else:
         drawPile.active = True
         turnDone.active = False
+
+    board.displayInstructions(screen, validMoves, playState)
+
 
     pygame.display.flip()
     clock.tick(60)
