@@ -1,8 +1,6 @@
 import pygame
 import random
 
-# color
-color = ["red","yellow","Green","Blue"]
 
 
 class Player:
@@ -25,6 +23,11 @@ class Player:
 
      def getHuman(self):
          return self.human
+     
+     def setMean(self,mean):
+          self.mean = mean
+     def setColor(self,color):
+          self.color = color
 
 
 

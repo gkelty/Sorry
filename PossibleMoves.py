@@ -186,5 +186,10 @@ def main():
     board.deck.drawCard()
     player = 1
     validMoves = getValidPossibleMoves(board, player)
+
+    print(validMoves)
+#main()
+
 #    print(validMoves)
 main()
+

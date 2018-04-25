@@ -67,10 +67,12 @@ class dbConnection:
         
     # This method is called when a user signs up. It will add a player to our DB. 
     def addPlayer(dbConnect, newUser):
+        import mainMenu
         query = dbConnect.cursor()
         insertQuery = ("INSERT INTO tblPlayer (playerID, username, userPassword) VALUES (null," + "'" + newUser+ "'" + "," + "'" + "null" + "'" + ")")
         query.execute(insertQuery)
         dbConnect.commit()
+        mainMenu.startPage(newUser)
 
     def playerExist(username):
         dbConnect = dbConnection.connectDB()
@@ -88,7 +90,9 @@ class dbConnection:
         username = username.getText()
         playerExist = dbConnection.playerExist(username)
         if  playerExist == False:
-            dbConnection.addPlayer(dbConnection.connectDB(),username)
+##            dbConnection.addPlayer(dbConnection.connectDB(),username)
+            isNewUser = True
+            mainMenu.intro(isNewUser, username)
             print("username added to DB")
             mainMenu.startPage(username)
         elif username == "":
