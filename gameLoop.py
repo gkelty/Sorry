@@ -74,15 +74,19 @@ def main(textObjects, numOfComps, userColor, username):
         global playState
         global activePawn
         deactivateAllTileButtons(buttons)
-        for move in validMoves:
-            pawn = move[0]
-            if pawn.tileName == tileName:
-                for button in buttons:
-                    if button.name == move[2]:
-                        button.active = True
-                        activePawn = pawn
-                        break
-        playState = 2
+        if board.currentPlayer ==1:
+            for move in validMoves:
+                pawn = move[0]
+                if pawn.tileName == tileName:
+                    for button in buttons:
+                        if button.name == move[2]:
+                            button.active = True
+                            activePawn = pawn
+                            break
+            playState = 2
+        else:
+            activePawn = validMoves[0][0]
+            movePawnToPosition(buttons,validMoves[0][2])
         return None
 
     def deactivateAllTileButtons(buttons):
@@ -101,6 +105,12 @@ def main(textObjects, numOfComps, userColor, username):
                 if button.name == currentPosition:
                     button.active = True
                     break
+            if pawn.player == board.currentPlayer:
+                currentPosition = pawn.tileName
+                for button in buttons:
+                    if button.name == currentPosition:
+                        button.active = True
+                        break
         playState = 1
         return None
 
