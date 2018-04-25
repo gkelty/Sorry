@@ -1,13 +1,22 @@
 
+How to Play Sorry:
+Choose a player to go first (high draw or youngest player will work). Play continues clockwise.
+
+Shuffle the deck of cards and place them in the center of the play area. At the beginning of your turn, draw a card from the draw pile. If you draw a 1 or a 2, move a pawn from the “START” area onto the board. If you don’t draw a 1 or a 2, you cannot move a pawn onto the board. If you already have a pawn on the board, you may move according to the number rules for that card
+
+
 Jumping/Bumping:
 What would a race be without a little jumping and bumping? You may jump over a pawn (yours or an opponents) that is in your path if you have sufficient movement points. However, two pawns can’t occupy the same spot on the board, so if you land on a space that contains another pawn, bump it back to it’s “START” space.
 Slide Zones:
 The Slide Zone looks like a thermometer with a triangle on the top. If at any time you land exactly on the triangle of a Slide Zone that does not match your pawn’s color, slide to the end of the Slide Zone, bumping off any tokens in your path.
+
+
 Safety Zones:
 Safety Zones look like Slide Zones, but they are larger. Only you may enter your Safety Zone. All normal rules apply. Note, you can’t move backwards into your safety zone, though you can exit a safety zone with a backwards move card. That pawn would be able to reenter the safety zone on a subsequent turn.
+
+
 Start Zone:
 One a 1 or a 2, move a pawn out of the “START” circle onto the first space beneath it ( a smaller circle at the end of a Slide Zone). Both a 1 and a 2 move the pawn onto the outer starting circle, but a 2 card allows the player to draw a second move card. Remember, two pawns may never occupy the same space, even the outer starting circle.
-
 
 
 The Cards:
@@ -23,3 +32,4 @@ The Cards:
 12—Move a pawn forward 12 spaces.
 Sorry!—
 Take one pawn from your “START” position and move it to any legal space occupied by an opponent (no “HOME”, “START”, or “SAFETY ZONE” spaces), and bump the opponent back to their “START” space. If you have no pawns in the “START” space, or there are no legal pawns to bump, end your turn.
+
