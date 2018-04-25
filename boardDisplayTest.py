@@ -54,13 +54,16 @@ def deactivateAllTileButtons(buttons):
 def displayPawnsWithValidMoves(validMoves, buttons):
     global playState
     deactivateAllTileButtons(buttons)
+    print("player: ", board.currentPlayer)
+    print(validMoves)
     for move in validMoves:
         pawn = move[0]
-        currentPosition = pawn.tileName
-        for button in buttons:
-            if button.name == currentPosition:
-                button.active = True
-                break
+        if pawn.player == board.currentPlayer:
+            currentPosition = pawn.tileName
+            for button in buttons:
+                if button.name == currentPosition:
+                    button.active = True
+                    break
     playState = 1
     return None
 
@@ -68,15 +71,19 @@ def displayValidMovesForPawn(validMoves, buttons, tileName):
     global playState
     global activePawn
     deactivateAllTileButtons(buttons)
-    for move in validMoves:
-        pawn = move[0]
-        if pawn.tileName == tileName:
-            for button in buttons:
-                if button.name == move[2]:
-                    button.active = True
-                    activePawn = pawn
-                    break
-    playState = 2
+    if board.currentPlayer == 1:
+        for move in validMoves:
+            pawn = move[0]
+            if pawn.tileName == tileName:
+                for button in buttons:
+                    if button.name == move[2]:
+                        button.active = True
+                        activePawn = pawn
+                        break
+        playState = 2
+    else:
+        activePawn = validMoves[0][0]
+        movePawnToPosition(buttons, validMoves[0][2])
     return None
 
 def movePawnToPosition(buttons, tileName):
@@ -127,6 +134,7 @@ def sorryPawn(board, pawn):
     pawn.tileName = newTile
 
 def endTurn():
+    print("end turn")
     board.deck.discardCard()
     board.currentPlayer = board.currentPlayer%4 + 1
 
@@ -213,6 +221,9 @@ while True:
             validMoves = PossibleMoves.getValidPossibleMoves(board, board.currentPlayer)
             if validMoves != []:
                 displayPawnsWithValidMoves(validMoves, buttons)
+                    # activePawn = validMoves[0][0]
+                    # activePawn.tileName = validMoves[0][2]
+
             else:
                 turnDone.active = True
         elif playState == 1 or playState == 2:
