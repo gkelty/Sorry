@@ -4,6 +4,9 @@ from Card import Card, Deck
 from boardButton import BoardButton
 import Image
 
+## player vs player = 1
+## player vs computer = 2
+
 class Board:
     boardImage = Image.getImage('images\sorryGameBoardNoCenter.png')
     boardCenterImage = Image.getImage('images\sorryGameBoardCenterOnly.png')

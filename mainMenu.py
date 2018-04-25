@@ -419,7 +419,7 @@ def instructions(username):
         infile = open("instructionText.txt", 'r')
         instructions = []
         for line in infile:
-            instructions.append(line)
+            instructions.append(line.strip('\n'))
 
         height = (displayHeight/2 - 100)
         for instruction in instructions:

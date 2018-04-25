@@ -48,6 +48,8 @@ playState = 0
 
 
 def main(textObjects, numOfComps, userColor, username):
+
+    dbConnection.incrementGamesPlayed(dbConnection.connectDB(), username)
     
     buttons = []
     validMoves = []
