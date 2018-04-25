@@ -64,12 +64,25 @@ class dbConnection:
             
         return stats
 
+    def incrementGamesPlayed(dbConnect,username):
+        query = dbConnect.cursor()
+        selectQuery = ("SELECT gamesPlayed FROM tblStats WHERE username = " + "'" + username +"'" + ";")
+        query.execute(selectQuery)
+        gamesPlayed = query.fetchall()
+        gamesPlayed = str(gamesPlayed).strip("'[](),")
+        gamesPlayed = int(gamesPlayed) + 1
+        gamesPlayed = str(gamesPlayed)
+        incrementQuery = ("UPDATE tblStats SET gamesPlayed = "+ "'" + gamesPlayed + "'" + " WHERE username =" + "'" + username + "'" + ";")
+        print(incrementQuery)
+        query.execute(incrementQuery)
+        dbConnect.commit()
+        
         
     # This method is called when a user signs up. It will add a player to our DB. 
     def addPlayer(dbConnect, newUser):
         import mainMenu
         query = dbConnect.cursor()
-        insertQuery = ("INSERT INTO tblPlayer (playerID, username, userPassword) VALUES (null," + "'" + newUser+ "'" + "," + "'" + "null" + "'" + ")")
+        insertQuery = ("INSERT INTO tblPlayer (playerID, username, userPassword) VALUES (null," + "'" + newUser + "'" + "," + "'" + "null" + "'" + ")")
         query.execute(insertQuery)
         dbConnect.commit()
         mainMenu.startPage(newUser)
