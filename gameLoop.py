@@ -1,3 +1,6 @@
+# this is starting the game
+import mainTest
+
 from Button import Button
 from TextInputBox import TextInputBox
 from dbConnection import dbConnection
@@ -9,9 +12,9 @@ import pygame
 import pygame.locals as pl
 import sys
 import os.path
+
 pygame.init()
 pygame.font.init()
-
 
 
 # Define additional button colors (beyond white, grey, black)
@@ -19,6 +22,9 @@ TRANSPARENT = (0, 0, 0, 0)
 PURPLE = (255, 125, 255)
 DARKPURPLE = (198, 0, 198)
 GREEN = (50, 200, 20)
+FORESTGREEN = (34,139,34)
+DARKGREY = (127,127,127)
+
 
 # setting user colors
 yellow = 0
@@ -35,16 +41,16 @@ colors= { "yellow": 0,
           "blue": 270
           }
 
-
-
 #global validMoves and buttons list and activePawn - DO WE NEED TO FIX THIS?
-validMoves = []
+
 activePawn = None
 playState = 0
+
 
 def main(textObjects, numOfComps, userColor, username):
     
     buttons = []
+    validMoves = []
 
     def slide(board, pawn, lengthOfSlide):
         currentTile = pawn.tileName
@@ -133,6 +139,13 @@ def main(textObjects, numOfComps, userColor, username):
             endTurn(board, numOfComps+1)
         playState = 0
         return None
+    
+    def sorryPawn(board, pawn):
+        startNumbers = [61, 62, 63, 64]
+        for num in startNumbers:
+            if board.tiles[num]['side'] == pawn.player:
+                newTile = num
+        pawn.tileName = newTile
 
    
             
@@ -145,7 +158,7 @@ def main(textObjects, numOfComps, userColor, username):
     # validate computer setting input
     for txt in textObjects:
         txt = txt.getText()
-        newTxtObject.append(txt)
+        newTxtObject.append(txt.lower())
 
     #print(newTxtObject)
 
@@ -157,23 +170,18 @@ def main(textObjects, numOfComps, userColor, username):
         else:
             
             intelligenceArray.append(newTxtObject[i])
-        
-##    print(behaviorArray)
-##    print(intelligenceArray)
-                        
-                    
+
+                                           
     for b in behaviorArray:
 ##        print(b)
         if b not in behaviorChoices:
-            mainMenu.newGame2(username, numOfComps, userColor)
+            mainMenu.newGame2(username, numOfComps, userColor, False)
             
     for i in intelligenceArray:
 ##        print(i)
         if i not in intelligenceChoices:
-            mainMenu.newGame2(username, numOfComps, userColor)
+            mainMenu.newGame2(username, numOfComps, userColor, False)
         
-
-    
     # Create screen and initialize clock
     screen = pygame.display.set_mode((1000, 600))
     clock = pygame.time.Clock()
@@ -217,12 +225,18 @@ def main(textObjects, numOfComps, userColor, username):
     drawPile = Button("Draw Card", (650, 250), board.deck.drawCard,
                     buttonColor=TRANSPARENT, backgroundColor=TRANSPARENT, buttonSize = (75,45))
 
-    turnDone = Button("End Turn", (260, 150), endTurn, actionArgs=[board, numOfComps+1],
+    turnDone = Button("End Turn", (175, 575), endTurn, actionArgs=[board, numOfComps+1],
                     buttonColor=GREEN, buttonSize = (100,30), active=False)
+    
+    backButton = Button("Main Menu", (100,50), mainMenu.startPage, actionArgs=[username], buttonColor = FORESTGREEN, buttonSize=(200,30))
+
+    instructionsButton = Button("Instructions", (100,100), mainMenu.instructions, actionArgs=[username], buttonSize=(200,30),buttonColor = DARKGREY)
 
     buttons.append(drawPile)
     buttons.append(turnDone)
-
+    buttons.append(backButton)
+    buttons.append(instructionsButton)
+    
     while True:
         screen.fill((225, 225, 225))
         for event in pygame.event.get():
@@ -234,7 +248,8 @@ def main(textObjects, numOfComps, userColor, username):
                     button.mouseButtonDown()
 
         # Blit board and cards to screen
-        board.displayBoard(screen)
+        board.displayBoard(screen,board)
+        board.displayColor(screen)
 
 
         # Blit buttons on screen
@@ -260,6 +275,8 @@ def main(textObjects, numOfComps, userColor, username):
             drawPile.active = True
             turnDone.active = False
 
+
+        board.displayInstructions(screen, validMoves, playState)
         pygame.display.flip()
         clock.tick(60)
 
