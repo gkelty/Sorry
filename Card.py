@@ -2,6 +2,7 @@ import pygame
 import random
 import Image
 
+pygame.font.init()
 """
 This class contains information to create cards. 
 """
@@ -81,8 +82,7 @@ class Deck:
             self.discard = pygame.transform.rotozoom(self.currentCard.getCardImage(), 90, 0.3)
         self.currentCard = None
 
-
-    def displayDeck(self, screen, drawPileLocation, discardPileLocation, bigCardLocation):
+    def displayDeck(self, screen, board, drawPileLocation, discardPileLocation, bigCardLocation):
         if self.drawPileActive:
             if self.currentCard == None:
                 screen.blit(Deck.drawPileImage, (drawPileLocation))

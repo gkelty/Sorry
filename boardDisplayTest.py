@@ -18,7 +18,7 @@ clock = pygame.time.Clock()
 board = Board(boardOrientation=0, boardLocation=(350, 0))
 
 # Print the order of the shuffled deck (top card listed last) for testing purposes
-board.deck.showCards()
+#board.deck.showCards()
 
 # Define additional button colors (beyond white, grey, black)
 TRANSPARENT = (0, 0, 0, 0)
@@ -37,14 +37,21 @@ validMoves = []
 activePawn = None
 
 
+# Button handler
+def tileButtonHandler(tileName):
+    if playState == 1:
+        #send to function that does logic for displaying moves
+        displayValidMovesForPawn(validMoves, buttons, tileName)
+    elif playState == 2:
+        #send to function that moves pawn to new space (including handling slides), discard card, increment player, next player's turn
+        movePawnToPosition(buttons, tileName)
 
 
 def deactivateAllTileButtons(buttons):
-    print("deactivate")
+#    print("deactivate")
     for button in buttons:
         if 0 < button.name < 89:
             button.active = False
-
 
 def displayPawnsWithValidMoves(validMoves, buttons):
     global playState
@@ -58,7 +65,6 @@ def displayPawnsWithValidMoves(validMoves, buttons):
                 break
     playState = 1
     return None
-
 
 def displayValidMovesForPawn(validMoves, buttons, tileName):
     global playState
@@ -79,19 +85,21 @@ def movePawnToPosition(buttons, tileName):
     global playState
     global activePawn
     deactivateAllTileButtons(buttons)
+    oldTile = activePawn.tileName
     activePawn.tileName = tileName
     for otherPawn in board.pawns:
         if otherPawn.player != board.currentPlayer:
-            print("other pawn", otherPawn.tileName)
             if otherPawn.tileName == tileName:
-                sorryPawn(board, otherPawn)
-    print(board.tiles[activePawn.tileName]['specialType'])
-    if board.tiles[activePawn.tileName]['specialType'] == 'slide4':
-        slide(board, activePawn, 4)
-    elif board.tiles[activePawn.tileName]['specialType'] == 'slide5':
-        slide(board, activePawn, 5)
+                if board.deck.currentCard.value == '11':
+                    otherPawn.tileName = oldTile
+                else:
+                    sorryPawn(board, otherPawn)
+    if board.tiles[activePawn.tileName]['side'] != board.currentPlayer:
+        if board.tiles[activePawn.tileName]['specialType'] == 'slide4':
+            slide(board, activePawn, 4)
+        elif board.tiles[activePawn.tileName]['specialType'] == 'slide5':
+            slide(board, activePawn, 5)
     activePawn = None
-    print(board.deck.currentCard.value)
     if board.deck.currentCard.value == '2':
         board.deck.discardCard()
     else:
@@ -103,9 +111,7 @@ def slide(board, pawn, lengthOfSlide):
     currentTile = pawn.tileName
     for i in range(lengthOfSlide-1):
         newTile = board.tiles[currentTile]['tileAhead']
-        print("new tile", newTile)
         for otherPawn in board.pawns:
-            print("other pawn", otherPawn.tileName)
             if otherPawn.tileName == newTile:
                 if otherPawn.player == board.currentPlayer:
                     sorryPawn(board, otherPawn)
@@ -120,12 +126,12 @@ def sorryPawn(board, pawn):
     for num in startNumbers:
         if board.tiles[num]['side'] == pawn.player:
             newTile = num
-    print("start?", newTile)
     pawn.tileName = newTile
 
 def endTurn():
     board.deck.discardCard()
     board.currentPlayer = board.currentPlayer%4 + 1
+
 
 
 # Checks tile locations around the outside track
@@ -164,7 +170,7 @@ for i in range(1, 89):
 drawPile = Button("Draw Card", (650, 250), board.deck.drawCard,
                     buttonColor=TRANSPARENT, backgroundColor=TRANSPARENT, buttonSize = (75,45))
 
-turnDone = Button("End Turn", (260, 150), endTurn,
+turnDone = Button("End Turn", (175, 575), endTurn,
                     buttonColor=GREEN, buttonSize = (100,30), active=False)
 
 #moveForwardOne = Button("Move Forward", (260, 250), moveForwardOne,
@@ -193,8 +199,9 @@ while True:
                 button.mouseButtonDown()
 
     # Blit board and cards to screen
-    board.displayBoard(screen)
+    board.displayBoard(screen, board)
 
+    board.displayColor(screen)
 
     # Blit buttons on screen
     for button in buttons:
@@ -218,6 +225,9 @@ while True:
     else:
         drawPile.active = True
         turnDone.active = False
+
+    board.displayInstructions(screen, validMoves, playState)
+
 
     pygame.display.flip()
     clock.tick(60)
