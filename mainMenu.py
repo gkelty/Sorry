@@ -1,6 +1,7 @@
 from Button import Button
 from TextInputBox import TextInputBox
 from dbConnection import dbConnection
+from gameLoop import main
 import pygame
 import pygame.locals as pl
 import sys
@@ -36,7 +37,7 @@ def text_objects(text, font):
 
 
 # Display an intro page that gives user the option to sign in or register 
-def intro():
+def intro(isNewUser, username):
     screen = pygame.display.set_mode((displayWidth,displayHeight))
     # create text input box object
     userNameInput = TextInputBox(250, 300, 140, 22)
@@ -80,24 +81,47 @@ def intro():
         screen.blit(userSurf, userRect)
         
         for button in buttons:
-            button.draw(screen)        
+            button.draw(screen)
 
+        if isNewUser == True:
+            createUser = Button("Create new user", (300,400),dbConnection.addPlayer, actionArgs=[dbConnection.connectDB(),username], buttonSize=(100,30), buttonColor=DARKGREY)
+            cancel = Button("Cancel",(300,450),intro, actionArgs=[False, None], buttonSize=(100,30), buttonColor=RED)
+            buttons = [createUser, cancel]
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    for button in buttons:
+                        Button.mouseButtonDown(button)
+                for button in buttons:
+                    button.draw(screen)
+
+            TextSurf, TextRect = text_objects(username, smallText)
+            TextRect.center = ((270),(312))
+            screen.blit(TextSurf, TextRect)
+                    
+                
         pygame.display.update()
         clock.tick(30)       
         
 # creates display when the user decides to sign in. 
 def startPage(username):
+
+
     screen = pygame.display.set_mode((displayWidth,displayHeight))
     screen.fill(SCREEN)
 
-    newGameButton = Button("New Game", (300,200), newGame1, actionArgs=[username], buttonColor = FORESTGREEN, buttonSize=(200,30))
+    newGameButton = Button("New Game", (300,200), newGame1, actionArgs=[username, True], buttonColor = FORESTGREEN, buttonSize=(200,30))
     resumeGameButton = Button("Resume Game", (300,250), resumeGame, buttonSize=(200,30),buttonColor = BLUE)
     instructionsButton = Button("Instructions", (300,300), instructions, actionArgs=[username], buttonSize=(200,30),buttonColor = DARKGREY)
     statsButton = Button("Game Statistics", (300,350), statsDisplay,actionArgs=[username], buttonSize=(200,30),buttonColor = BANANA)
     exitButton = Button("Exit", (300,400), exitGame, buttonSize=(200,30),buttonColor = RED)
+    backButton = Button("Back to Sign In", (300,500), intro, actionArgs=[False, None], buttonColor = SCREEN, buttonSize=(200,30))
 
 
-    buttons = [newGameButton, resumeGameButton, instructionsButton, statsButton, exitButton]
+    buttons = [backButton,newGameButton, resumeGameButton, instructionsButton, statsButton, exitButton]
 
     # start clock
     clock = pygame.time.Clock()
@@ -175,17 +199,13 @@ def statsDisplay(username):
             height += 50
         
         # Draw button to screen
-        backButton.draw(screen)
+        for button in buttons:
+            button.draw(screen)
         
         pygame.display.update()
         clock.tick(30)
 
-def setColor(textObjects):
-    for txt in textObjects:       
-        print(txt.getText())
-
-
-def newGame1(username):
+def newGame1(username, valid):
     
     screen = pygame.display.set_mode((displayWidth,displayHeight))
     screen.fill(SCREEN)
@@ -193,11 +213,12 @@ def newGame1(username):
     userColor = TextInputBox(250, 350, 140, 22)
     numOfComps = TextInputBox(250, 235, 140, 22)
 
-    clock = pygame.time.Clock()
+    colorButton = Button("continue..", (300,500), newGame2, actionArgs=[username, numOfComps,userColor, True], buttonSize=(200,30),buttonColor = BLUE)
+##    backButton = Button("Main Menu", (300,550), startPage, actionArgs=[username], buttonSize=(200,30), buttonColor = FORESTGREEN)
 
-
-    colorButton = Button("continue..", (300,500), newGame2, actionArgs=[username, numOfComps,userColor], buttonSize=(200,30),buttonColor = BLUE)
     buttons = [colorButton]
+
+    clock = pygame.time.Clock()
     while True:
         
         for event in pygame.event.get():
@@ -208,16 +229,16 @@ def newGame1(username):
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 for button in buttons:
                     Button.mouseButtonDown(button)                    
-
                     userColor.updateEvent(event)
                     numOfComps.updateEvent(event)
-
             else:
                 userColor.updateEvent(event)
                 numOfComps.updateEvent(event)
 
+        
         screen.fill(SCREEN)
 
+                
         TextSurf, TextRect = text_objects(("New Game Setup"), mediumText)
         TextRect.center = ((displayWidth/2),(displayHeight/7))
         screen.blit(TextSurf, TextRect)
@@ -230,36 +251,46 @@ def newGame1(username):
         TextRect.topleft = ((20),(displayHeight/2))
         screen.blit(TextSurf, TextRect)
 
-            
         userColor.updateDisplay()
         userColor.draw(screen)
         numOfComps.updateDisplay()
         numOfComps.draw(screen)
+ 
 
         for button in buttons:
             color = button.getButtonColor()
             button.draw2(screen,color)
 
+        if valid == False:
+            myfont = pygame.font.SysFont('segoe UI', 28)
+            validation = "Please enter correct values"
+            textsurface = myfont.render(validation, False, RED)
+            screen.blit(textsurface, (200, 400))
+            
         pygame.display.update()
         clock.tick(30)
-def newGame2(username,numOfComps,userColor):
+        
+def newGame2(username,numOfComps,userColor, valid):
     
     # validate user input from newGame1
     colors = ["red", "blue", "green", "yellow"]
-    userColor = userColor.getText().lower()
-    numOfComps = numOfComps.getText()
-    if userColor.isalpha() == False:
-        newGame1(username)
-    elif userColor not in colors:
-        newGame1(username)
-        
-    if numOfComps.isalpha():
-        newGame1(username)
+    if not isinstance(userColor, str):
+        userColor = userColor.getText().lower()
+    if not isinstance(numOfComps, int):
+        numOfComps = numOfComps.getText()
+    if isinstance(userColor, str):
+        if userColor.isalpha() == False:
+            newGame1(username, False)
+        elif userColor not in colors:
+            newGame1(username, False)
+    if isinstance(numOfComps, str): 
+        if numOfComps.isalpha():
+            newGame1(username, False)
 
-    numOfComps = int(numOfComps) + 1
+    numOfComps = int(numOfComps)
         
-    if numOfComps < 1 or numOfComps > 4:
-        newGame1(username)
+    if numOfComps < 1 or numOfComps > 3:
+        newGame1(username, False)
 
 
     # create new screen
@@ -268,22 +299,26 @@ def newGame2(username,numOfComps,userColor):
 
     clock = pygame.time.Clock()
     
-    # add username and hardcode names of computer
-    names = [username, "Computer 1", "Computer 2", "Computer3"]
+    # hardcode names of computer
+    names = [ "Computer 1", "Computer 2", "Computer3"]
 
     # create textbox objects
     textObjects = []
-    height = 190
+    height = displayHeight/3 + 40
+
+    
     for i in range(0,numOfComps):
         behavior = TextInputBox(140, height, 50, 22)
         intelligence = TextInputBox(370, height, 50, 22)
-        height += 100
+        height += 75
         textObjects.append(behavior)
         textObjects.append(intelligence)
         
     # create button object
-    colorButton = Button("set", (300,550), setColor, actionArgs=[textObjects], buttonSize=(200,30),buttonColor = BLUE)
-    buttons = [colorButton]
+    colorButton = Button("set", (300,530), main, actionArgs=[textObjects, numOfComps, userColor, username], buttonSize=(200,30),buttonColor = BLUE)
+    backButton = Button("back", (300,570), newGame1, actionArgs=[username, True], buttonColor = FORESTGREEN, buttonSize=(200,30))
+
+    buttons = [colorButton,backButton]
     while True:
         
         for event in pygame.event.get():
@@ -308,25 +343,50 @@ def newGame2(username,numOfComps,userColor):
         TextRect.center = ((displayWidth/2),(displayHeight/7))
         screen.blit(TextSurf, TextRect)
 
+        TextSurf, TextRect = text_objects(("Set the Behavior and Intelligence of opponents"), instructionText)
+        TextRect.center = ((displayWidth/2),(displayHeight/7 + 40))
+        screen.blit(TextSurf, TextRect)   
+
+        TextSurf, TextRect = text_objects(("Behavior"), smallText)
+        TextRect.center = ((210),(190))
+        screen.blit(TextSurf, TextRect)
+
+        TextSurf, TextRect = text_objects(("(mean/nice)"), instructionText)
+        TextRect.center = ((210),(215))
+        screen.blit(TextSurf, TextRect)
+
+        TextSurf, TextRect = text_objects(("Intelligence"), smallText)
+        TextRect.center = ((460),(190))
+        screen.blit(TextSurf, TextRect)
+
+        TextSurf, TextRect = text_objects(("(smart/dumb)"), instructionText)
+        TextRect.center = ((460),(215))
+        screen.blit(TextSurf, TextRect)
+
         # depending on number of computer opponents the user pics, display the names
-        height = displayHeight/3
+        height = displayHeight/3 + 50
         for name in range(0,numOfComps):
             TextSurf, TextRect = text_objects((names[name] + ":"), smallText)
             TextRect.center = ((displayWidth/6 - 35),(height))
             screen.blit(TextSurf, TextRect)
-            height += 100
+            height += 75
 
         # draw the textboxes
-        for i in range(0,numOfComps*2):
+        for i in range(0,(numOfComps)*2):
             textObjects[i].updateDisplay()
             textObjects[i].draw(screen)
-##            color2.updateDisplay()
-##            color2.draw(screen)
+
 
         # draw the buttons
         for button in buttons:
             color = button.getButtonColor()
             button.draw2(screen,color)
+
+        if valid == False:
+            myfont = pygame.font.SysFont('segoe UI', 28)
+            validation = "Please enter correct values"
+            textsurface = myfont.render(validation, False, RED)
+            screen.blit(textsurface, (180, 460))
 
         pygame.display.update()
         clock.tick(30)

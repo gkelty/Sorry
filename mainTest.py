@@ -1,7 +1,7 @@
 import mainMenu
 
 def main():
-    mainMenu.intro()
+    mainMenu.intro(False, None)
 
 main()
 

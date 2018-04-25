@@ -187,7 +187,11 @@ def main():
     board.deck.drawCard()
     player = 1
     validMoves = getValidPossibleMoves(board, player)
-    rankingMoves(validMoves)
+
+
     print(validMoves)
+#main(
+
 #    print(validMoves)
 main()
+

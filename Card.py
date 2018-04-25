@@ -2,6 +2,7 @@ import pygame
 import random
 import Image
 
+pygame.font.init()
 """
 This class contains information to create cards. 
 """
@@ -92,8 +93,7 @@ class Deck:
         random.shuffle(self.discards)
         self.cards = self.discards
 
-
-    def displayDeck(self, screen, drawPileLocation, discardPileLocation, bigCardLocation):
+    def displayDeck(self, screen, board, drawPileLocation, discardPileLocation, bigCardLocation):
         if self.drawPileActive:
             if self.currentCard == None:
                 screen.blit(Deck.drawPileImage, (drawPileLocation))
