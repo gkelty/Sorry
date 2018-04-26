@@ -12,4 +12,3 @@ class BoardButton():
         return(self.location)
     def getTileNum(self):
         return(self.tileNum)
-   
