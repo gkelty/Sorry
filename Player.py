@@ -1,7 +1,7 @@
 import pygame
 import random
 
-
+#PLayer class, not really used fully any more
 
 class Player:
 
