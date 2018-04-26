@@ -1,5 +1,9 @@
 The point of the game is to get all 4 of your pawns from START to HOME.
 The first to do so will be victorious!
 Simply draw a card from the pile and do as it says.
+You can knock an opponent back to START by landing on them. -
+But be carful it could happen to you!
+If you and on a spot with an arrow (that is not your color) you will slide to the end -
+while worrying all pawns along the way, including your own. 
 In order to start a game, simply press "New Game" on the main menu enter the 
 desired info. 

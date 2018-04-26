@@ -5,6 +5,9 @@ from boardButton import BoardButton
 import Image
 from Player import Player
 
+## player vs player = 1
+## player vs computer = 2
+
 class Board:
     boardImage = Image.getImage('images\sorryGameBoardNoCenter.png')
     boardCenterImage = Image.getImage('images\sorryGameBoardCenterOnly.png')
@@ -245,9 +248,9 @@ class Board:
             else:
                 pawn.displayPawn(screen, (locationX + Board.pawnTileOffset[0], locationY + Board.pawnTileOffset[1]))
 
-    def displayColor(self, screen):
+    def displayColor(self, screen, mode):
         myfont = pygame.font.SysFont('freesans.ttf', 30)
-        mode = 1  # mode 1: play against computer, mode 2: play with friends -- pass this value in to this function
+##        mode = 1  # mode 1: play against computer, mode 2: play with friends -- pass this value in to this function
         if mode == 1:
             if self.currentPlayer == 1:
                 turnMessage = "It's your turn!"
@@ -258,8 +261,8 @@ class Board:
         textsurface = myfont.render(turnMessage, False, (0, 0, 0))
         screen.blit(textsurface, (100, 300))
 
-    def getInstructions(self, validMoves, playState):
-        mode = 1        # mode 1: play against computer, mode 2: play with friends -- pass this value in to this function
+    def getInstructions(self, validMoves, playState, mode):
+##        mode = 1        # mode 1: play against computer, mode 2: play with friends -- pass this value in to this function
         instructions = []
         if mode == 1:
             if self.currentPlayer != 1:
@@ -302,10 +305,10 @@ class Board:
                     instructions = ["Click on a highlighted space", "to move the pawn there."]
         return instructions
 
-    def displayInstructions(self, screen, validMoves, playState):
+    def displayInstructions(self, screen, validMoves, playState, mode):
         yLoc = 400
         myfont = pygame.font.SysFont('segoe UI', 15)
-        instructions = self.getInstructions(validMoves, playState)
+        instructions = self.getInstructions(validMoves, playState, mode)
         for line in instructions:
             textsurface = myfont.render(line, False, (0, 0, 0))
             screen.blit(textsurface, (50, yLoc))

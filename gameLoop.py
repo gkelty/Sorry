@@ -14,7 +14,7 @@ import sys
 import os.path
 
 pygame.init()
-pygame.font.init()
+##pygame.font.init()
 
 
 # Define additional button colors (beyond white, grey, black)
@@ -47,7 +47,7 @@ activePawn = None
 playState = 0
 
 
-def main(textObjects, numOfComps, userColor, username):
+def main(textObjects, numOfComps, userColor, username, mode):
     
     buttons = []
     validMoves = []
@@ -56,9 +56,9 @@ def main(textObjects, numOfComps, userColor, username):
         currentTile = pawn.tileName
         for i in range(lengthOfSlide-1):
             newTile = board.tiles[currentTile]['tileAhead']
-            print("new tile", newTile)
+##            print("new tile", newTile)
             for otherPawn in board.pawns:
-                print("other pawn", otherPawn.tileName)
+##                print("other pawn", otherPawn.tileName)
                 if otherPawn.tileName == newTile:
                     if otherPawn.player == board.currentPlayer:
                         sorryPawn(board, otherPawn)
@@ -123,7 +123,7 @@ def main(textObjects, numOfComps, userColor, username):
     def endTurn(board, numPlayers):
         board.deck.discardCard()
         board.currentPlayer = board.currentPlayer%numPlayers + 1
-        print("Current Player: " ,board.currentPlayer)
+##        print("Current Player: " ,board.currentPlayer)
 
     
     def movePawnToPosition(buttons, tileName):
@@ -163,14 +163,13 @@ def main(textObjects, numOfComps, userColor, username):
 
     behaviorArray = []
     intelligenceArray = []
-    newTxtObject = []
+    newTxtObject = []    
+    
     
     # validate computer setting input
     for txt in textObjects:
         txt = txt.getText()
         newTxtObject.append(txt.lower())
-
-    #print(newTxtObject)
 
     for i in range(0,len(newTxtObject)):
         if i % 2 == 0:
@@ -185,11 +184,31 @@ def main(textObjects, numOfComps, userColor, username):
                                            
     for b in behaviorArray:
         if b not in behaviorChoices:
-            mainMenu.newGame2(username, numOfComps, userColor, False)
+            if mode == 1:
+                mode = "computer"
+            elif mode == 2:
+                mode = "player"
+            mainMenu.newGame2(username, numOfComps, userColor, False, mode)
             
     for i in intelligenceArray:
         if i not in intelligenceChoices:
+
             mainMenu.newGame2(username, numOfComps, userColor, False)
+
+
+            if mode == 1:
+                mode = "computer"
+            elif mode == 2:
+                mode = "player"
+            
+            mainMenu.newGame2(username, numOfComps, userColor, False, mode)
+
+
+    # when you get here I am assuming input is valid and a new game is being played so
+    # I update gamesPlayed in tblStats by 1
+    
+    dbConnection.incrementGamesPlayed(dbConnection.connectDB(), username)
+    
 
     # Create screen and initialize clock
     screen = pygame.display.set_mode((1000, 600))
@@ -215,7 +234,7 @@ def main(textObjects, numOfComps, userColor, username):
         print(intelligenceArray[i])
         board.setComputer(i+2,intelligenceArray[i],behaviorArray[i])
     # Print the order of the shuffled deck (top card listed last) for testing purposes
-    board.deck.showCards()
+##    board.deck.showCards()
 
 
     # Play state variable
@@ -258,10 +277,13 @@ def main(textObjects, numOfComps, userColor, username):
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 for button in buttons:
                     button.mouseButtonDown()
+                    pygame.event.clear()
+            else:
+                pygame.event.clear()
 
         # Blit board and cards to screen
         board.displayBoard(screen,board)
-        board.displayColor(screen)
+        board.displayColor(screen, int(mode))
 
 
         # Blit buttons on screen
@@ -286,9 +308,10 @@ def main(textObjects, numOfComps, userColor, username):
         else:
             drawPile.active = True
             turnDone.active = False
+            
 
 
-        board.displayInstructions(screen, validMoves, playState)
+        board.displayInstructions(screen, validMoves, playState, int(mode))
         pygame.display.flip()
         clock.tick(60)
 

@@ -7,7 +7,7 @@ import pygame.locals as pl
 import sys
 import os.path
 pygame.init()
-pygame.font.init()
+##pygame.font.init()
 
 # Height and Width of display screen
 displayWidth = 600
@@ -99,7 +99,7 @@ def intro(isNewUser, username):
                     button.draw(screen)
 
             TextSurf, TextRect = text_objects(username, smallText)
-            TextRect.center = ((270),(312))
+            TextRect.topleft = ((255),(303))
             screen.blit(TextSurf, TextRect)
                     
                 
@@ -212,10 +212,14 @@ def newGame1(username, valid):
 
     userColor = TextInputBox(250, 350, 140, 22)
     numOfComps = TextInputBox(250, 235, 140, 22)
+    mode = TextInputBox(250, 435,140, 22)
 
-    colorButton = Button("continue..", (300,500), newGame2, actionArgs=[username, numOfComps,userColor, True], buttonSize=(200,30),buttonColor = BLUE)
+
+    txtBoxes = [userColor, numOfComps, mode]
+
+    colorButton = Button("continue..", (300,500), newGame2, actionArgs=[username, numOfComps,userColor, True, mode], buttonSize=(200,30),buttonColor = BLUE)
 ##    backButton = Button("Main Menu", (300,550), startPage, actionArgs=[username], buttonSize=(200,30), buttonColor = FORESTGREEN)
-
+    
     buttons = [colorButton]
 
     clock = pygame.time.Clock()
@@ -229,11 +233,13 @@ def newGame1(username, valid):
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 for button in buttons:
                     Button.mouseButtonDown(button)                    
-                    userColor.updateEvent(event)
-                    numOfComps.updateEvent(event)
+                    for txt in txtBoxes:
+                        txt.updateEvent(event)
+
             else:
-                userColor.updateEvent(event)
-                numOfComps.updateEvent(event)
+                for txt in txtBoxes:
+                    txt.updateEvent(event)
+
 
         
         screen.fill(SCREEN)
@@ -248,14 +254,16 @@ def newGame1(username, valid):
         screen.blit(TextSurf, TextRect)
 
         TextSurf, TextRect = text_objects(("Choose your color (Red, Green, Blue, Yellow):  "), smallText)
-        TextRect.topleft = ((20),(displayHeight/2))
+        TextRect.topleft = ((20),(displayHeight/3 + 100))
         screen.blit(TextSurf, TextRect)
 
-        userColor.updateDisplay()
-        userColor.draw(screen)
-        numOfComps.updateDisplay()
-        numOfComps.draw(screen)
- 
+        TextSurf, TextRect = text_objects(("Player VS (Player,Computer): "), smallText)
+        TextRect.topleft = ((20),(displayHeight/3 + 200))
+        screen.blit(TextSurf, TextRect)
+
+        for txt in txtBoxes:
+            txt.updateDisplay()
+            txt.draw(screen)
 
         for button in buttons:
             color = button.getButtonColor()
@@ -265,12 +273,12 @@ def newGame1(username, valid):
             myfont = pygame.font.SysFont('segoe UI', 28)
             validation = "Please enter correct values"
             textsurface = myfont.render(validation, False, RED)
-            screen.blit(textsurface, (200, 400))
+            screen.blit(textsurface, (200, 150))
             
         pygame.display.update()
         clock.tick(30)
         
-def newGame2(username,numOfComps,userColor, valid):
+def newGame2(username,numOfComps,userColor, valid, mode):
     
     # validate user input from newGame1
     colors = ["red", "blue", "green", "yellow"]
@@ -291,17 +299,7 @@ def newGame2(username,numOfComps,userColor, valid):
         
     if numOfComps < 1 or numOfComps > 3:
         newGame1(username, False)
-
-
-    # create new screen
-    screen = pygame.display.set_mode((displayWidth,displayHeight))
-    screen.fill(SCREEN)
-
-    clock = pygame.time.Clock()
-    
-    # hardcode names of computer
-    names = [ "Computer 1", "Computer 2", "Computer3"]
-
+                
     # create textbox objects
     textObjects = []
     height = displayHeight/3 + 40
@@ -313,9 +311,33 @@ def newGame2(username,numOfComps,userColor, valid):
         height += 75
         textObjects.append(behavior)
         textObjects.append(intelligence)
+
+        
+    possibleModes = ["player", "computer"]
+    if not isinstance(mode, str):
+        mode = mode.getText().lower()
+
+    if mode not in possibleModes:
+        newGame1(username, False)
+    elif mode == "player":
+        mode = 2
+##        main(textObjects, numOfComps, userColor, username, mode)        
+    elif mode == "computer":
+        mode = 1
+
+
+    # create new screen
+    screen = pygame.display.set_mode((displayWidth,displayHeight))
+    screen.fill(SCREEN)
+
+    clock = pygame.time.Clock()
+    
+    # hardcode names of computer
+    names = [ "Computer 1", "Computer 2", "Computer3"]
+
         
     # create button object
-    colorButton = Button("set", (300,530), main, actionArgs=[textObjects, numOfComps, userColor, username], buttonSize=(200,30),buttonColor = BLUE)
+    colorButton = Button("set", (300,530), main, actionArgs=[textObjects, numOfComps, userColor, username, mode], buttonSize=(200,30),buttonColor = BLUE)
     backButton = Button("back", (300,570), newGame1, actionArgs=[username, True], buttonColor = FORESTGREEN, buttonSize=(200,30))
 
     buttons = [colorButton,backButton]
@@ -386,7 +408,7 @@ def newGame2(username,numOfComps,userColor, valid):
             myfont = pygame.font.SysFont('segoe UI', 28)
             validation = "Please enter correct values"
             textsurface = myfont.render(validation, False, RED)
-            screen.blit(textsurface, (180, 460))
+            screen.blit(textsurface, (200,450))
 
         pygame.display.update()
         clock.tick(30)
@@ -419,7 +441,7 @@ def instructions(username):
         infile = open("instructionText.txt", 'r')
         instructions = []
         for line in infile:
-            instructions.append(line)
+            instructions.append(line.strip('\n'))
 
         height = (displayHeight/2 - 100)
         for instruction in instructions:
