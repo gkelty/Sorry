@@ -306,7 +306,20 @@ def newGame2(username,numOfComps,userColor, valid, mode):
         
     if numOfComps < 1 or numOfComps > 3:
         newGame1(username, False)
+                
+    # create textbox objects
+    textObjects = []
+    height = displayHeight/3 + 40
 
+    
+    for i in range(0,numOfComps):
+        behavior = TextInputBox(140, height, 50, 22)
+        intelligence = TextInputBox(370, height, 50, 22)
+        height += 75
+        textObjects.append(behavior)
+        textObjects.append(intelligence)
+
+        
     possibleModes = ["player", "computer"]
     if not isinstance(mode, str):
         mode = mode.getText().lower()
@@ -316,6 +329,8 @@ def newGame2(username,numOfComps,userColor, valid, mode):
         newGame1(username, False)
     elif mode == "player":
         mode = 2
+        main(textObjects, numOfComps, userColor, username, mode)
+
     elif mode == "computer":
         mode = 1
 
@@ -329,17 +344,6 @@ def newGame2(username,numOfComps,userColor, valid, mode):
     # hardcode names of computer
     names = [ "Computer 1", "Computer 2", "Computer3"]
 
-    # create textbox objects
-    textObjects = []
-    height = displayHeight/3 + 40
-
-    
-    for i in range(0,numOfComps):
-        behavior = TextInputBox(140, height, 50, 22)
-        intelligence = TextInputBox(370, height, 50, 22)
-        height += 75
-        textObjects.append(behavior)
-        textObjects.append(intelligence)
         
     # create button object
     colorButton = Button("set", (300,530), main, actionArgs=[textObjects, numOfComps, userColor, username, mode], buttonSize=(200,30),buttonColor = BLUE)
