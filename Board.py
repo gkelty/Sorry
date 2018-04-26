@@ -210,11 +210,12 @@ class Board:
     #def returnBoard(self):
        # return(self.boardButtons)
 
-    def displayBoard(self, screen, board):
+    def displayBoard(self, screen):
         screen.blit(self.image, self.boardLocation)
         screen.blit(Board.boardCenterImage, self.boardLocation)
 
         #Blit current card on screen
+    def displayCards(self, screen, board):
         self.deck.displayDeck(screen, board, self.drawPileLocation, self.discardPileLocation, self.bigCardLocation)
 
     def displayPawns(self, screen):
@@ -232,6 +233,22 @@ class Board:
             else:
                 pawn.displayPawn(screen, (locationX + Board.pawnTileOffset[0], locationY + Board.pawnTileOffset[1]))
 
+    def computerMove(self, validMoves, smart):
+        if smart == True:
+            highScore = 0
+            bestMove = 0
+            for move in validMoves:
+                if move[3] > highScore:
+                    highScore = move[3]
+                    bestMove += 1
+            pawnToMove = validMoves[bestMove-1][0]
+        else:
+            pawnToMove = validMoves[0][0]
+            bestMove = 1
+        results = [pawnToMove, bestMove]
+        return results
+
+
     def displayColor(self, screen):
         myfont = pygame.font.SysFont('freesans.ttf', 30)
         mode = 1  # mode 1: play against computer, mode 2: play with friends -- pass this value in to this function
@@ -245,8 +262,8 @@ class Board:
         textsurface = myfont.render(turnMessage, False, (0, 0, 0))
         screen.blit(textsurface, (100, 300))
 
-    def getInstructions(self, validMoves, playState):
-        mode = 1        # mode 1: play against computer, mode 2: play with friends -- pass this value in to this function
+    def getInstructions(self, validMoves, playState, playMode):
+        mode = playMode
         instructions = []
         if mode == 1:
             if self.currentPlayer != 1:
@@ -289,10 +306,10 @@ class Board:
                     instructions = ["Click on a highlighted space", "to move the pawn there."]
         return instructions
 
-    def displayInstructions(self, screen, validMoves, playState):
+    def displayInstructions(self, screen, validMoves, playState, playMode):
         yLoc = 400
         myfont = pygame.font.SysFont('segoe UI', 15)
-        instructions = self.getInstructions(validMoves, playState)
+        instructions = self.getInstructions(validMoves, playState, playMode)
         for line in instructions:
             textsurface = myfont.render(line, False, (0, 0, 0))
             screen.blit(textsurface, (50, yLoc))

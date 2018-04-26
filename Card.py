@@ -97,4 +97,7 @@ class Deck:
                 if self.discard != None:
                     screen.blit(self.discard, (discardPileLocation))
             else:
+                screen.blit(Deck.drawPileImage, (drawPileLocation))
+                if self.discard != None:
+                    screen.blit(self.discard, (discardPileLocation))
                 screen.blit(self.currentCard.getCardImage(), (bigCardLocation))

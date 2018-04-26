@@ -16,9 +16,12 @@ clock = pygame.time.Clock()
 
 # Create new board and shuffled deck
 board = Board(boardOrientation=0, boardLocation=(350, 0))
+mean = [True, False, True]                                      ###WILL NEED TO PASS IN FROM GAME INIT
+smart = [True, True, False]
+playMode = 1                                                        ### mode 1: play against computer, mode 2: play with friends
 
 # Print the order of the shuffled deck (top card listed last) for testing purposes
-#board.deck.showCards()
+board.deck.showCards()
 
 # Define additional button colors (beyond white, grey, black)
 TRANSPARENT = (0, 0, 0, 0)
@@ -44,7 +47,7 @@ def tileButtonHandler(tileName):
         displayValidMovesForPawn(validMoves, buttons, tileName)
     elif playState == 2:
         #send to function that moves pawn to new space (including handling slides), discard card, increment player, next player's turn
-        movePawnToPosition(buttons, tileName)
+        movePawnToPosition(activePawn, tileName)
 
 
 def deactivateAllTileButtons(buttons):
@@ -73,27 +76,25 @@ def displayValidMovesForPawn(validMoves, buttons, tileName):
     global playState
     global activePawn
     deactivateAllTileButtons(buttons)
-    if board.currentPlayer == 1:
-        for move in validMoves:
-            pawn = move[0]
-            if pawn.tileName == tileName:
-                for button in buttons:
-                    if button.name == move[2]:
-                        button.active = True
-                        activePawn = pawn
-                        break
-        playState = 2
-    else:
-        activePawn = validMoves[0][0]
-        movePawnToPosition(buttons, validMoves[0][2])
+    for move in validMoves:
+        pawn = move[0]
+        if pawn.tileName == tileName:
+            for button in buttons:
+                if button.name == move[2]:
+                    button.active = True
+                    activePawn = pawn
+                    break
+    playState = 2
     return None
 
-def movePawnToPosition(buttons, tileName):
+def movePawnToPosition(pawn, tileName):
     global playState
     global activePawn
+    if board.currentPlayer == 1:
+        pawn = activePawn
     deactivateAllTileButtons(buttons)
-    oldTile = activePawn.tileName
-    activePawn.tileName = tileName
+    oldTile = pawn.tileName
+    pawn.tileName = tileName
     for otherPawn in board.pawns:
         if otherPawn.player != board.currentPlayer:
             if otherPawn.tileName == tileName:
@@ -101,11 +102,11 @@ def movePawnToPosition(buttons, tileName):
                     otherPawn.tileName = oldTile
                 else:
                     sorryPawn(board, otherPawn)
-    if board.tiles[activePawn.tileName]['side'] != board.currentPlayer:
-        if board.tiles[activePawn.tileName]['specialType'] == 'slide4':
-            slide(board, activePawn, 4)
-        elif board.tiles[activePawn.tileName]['specialType'] == 'slide5':
-            slide(board, activePawn, 5)
+    if board.tiles[pawn.tileName]['side'] != board.currentPlayer:
+        if board.tiles[pawn.tileName]['specialType'] == 'slide4':
+            slide(board, pawn, 4)
+        elif board.tiles[pawn.tileName]['specialType'] == 'slide5':
+            slide(board, pawn, 5)
     activePawn = None
     if board.deck.currentCard.value == '2':
         board.deck.discardCard()
@@ -126,7 +127,7 @@ def slide(board, pawn, lengthOfSlide):
                     sorryPawn(board, otherPawn)
         currentTile = newTile
     deactivateAllTileButtons(buttons)
-    activePawn.tileName = currentTile
+    pawn.tileName = currentTile
 
 def sorryPawn(board, pawn):
     startNumbers = [61, 62, 63, 64]
@@ -136,31 +137,38 @@ def sorryPawn(board, pawn):
     pawn.tileName = newTile
 
 def endTurn():
-    print("end turn")
+#    print("end turn")
     board.deck.discardCard()
-    board.currentPlayer = board.currentPlayer%4 + 1
+    board.currentPlayer = board.currentPlayer%4 + 1 ###THIS SHOULD BE NUMBER OF PLAYERS
 
+def playerTurn():
+        if playState == 0:
+            validMoves = PossibleMoves.getValidPossibleMoves(board, board.currentPlayer, mean)
+            board.displayInstructions(screen, validMoves, playState, playMode)
 
+            if validMoves != []:
+                displayPawnsWithValidMoves(validMoves, buttons)
+            else:
+                turnDone.active = True
+        elif playState == 1 or playState == 2:
+            turnDone.active = False
 
-# Checks tile locations around the outside track
-def moveForwardOne():
-    tileName = board.pawns[0].tileName
-    board.pawns[0].tileName = board.tiles[tileName]['tileAhead']
-    return None
+def computerTurn():
+    board.deck.drawCard()
+    board.displayCards(screen, board)
+    validMoves = PossibleMoves.getValidPossibleMoves(board, board.currentPlayer, mean)
+    board.displayInstructions(screen, validMoves, playState, playMode)
+#    pygame.time.wait(1000)
 
-# Checks all tile locations in whole board (init only one player for this test)
-# Uncomment the following and add the moveForwardAll button to buttons list:
+    if validMoves != []:
+        pawnToMove = board.computerMove(validMoves, smart[board.currentPlayer-2])[0]
+        bestMove = board.computerMove(validMoves, smart[board.currentPlayer-2])[1]
+        print(pawnToMove.tileName, "----", bestMove)
+        movePawnToPosition(pawnToMove, validMoves[bestMove-1][2])
+        board.displayInstructions(screen, validMoves, playState, playMode)
+    else:
+        endTurn()
 
-#board = Board(boardOrientation=0, playersEnabled=[True, False, False, False])
-
-def moveForwardAll():
-    tileName = board.pawns[0].tileName
-    board.pawns[0].tileName = (tileName %88) +1
-    return None
-def movePawn():
-    print("Moved")
-    board.pawns[0].tileName = int(button.getBoardButton())
-    return None
 
 ####### from here down, make main loop ###########
 buttons = []
@@ -205,11 +213,16 @@ while True:
         elif event.type == pygame.MOUSEBUTTONDOWN:
             for button in buttons:
                 button.mouseButtonDown()
+        else:
+            None
 
     # Blit board and cards to screen
-    board.displayBoard(screen, board)
+    board.displayBoard(screen)
+    board.displayCards(screen, board)
 
     board.displayColor(screen)
+    board.displayInstructions(screen, validMoves, playState, playMode)
+
 
     # Blit buttons on screen
     for button in buttons:
@@ -218,27 +231,27 @@ while True:
     # Blit pawns on screen
     board.displayPawns(screen)
 
-    # Activate or deactivate drawPile
-    if board.deck.currentCard != None:
-        drawPile.active = False
-        if playState == 0:
-            validMoves = PossibleMoves.getValidPossibleMoves(board, board.currentPlayer)
-            if validMoves != []:
-                displayPawnsWithValidMoves(validMoves, buttons)
-                    # activePawn = validMoves[0][0]
-                    # activePawn.tileName = validMoves[0][2]
-
-            else:
-                turnDone.active = True
-        elif playState == 1 or playState == 2:
+#########################MODE 1 = see old git for mode 2 and add it in##############################
+    if board.currentPlayer == 1:
+        # Activate or deactivate drawPile
+        if board.deck.currentCard != None:
+            drawPile.active = False
+            playerTurn()
+        else:
+            drawPile.active = True
             turnDone.active = False
 
     else:
-        drawPile.active = True
         turnDone.active = False
+        pygame.time.wait(500)
+        computerTurn()
 
-    board.displayInstructions(screen, validMoves, playState)
-
+#For mode 1:
+    if board.currentPlayer != 1:
+            pygame.time.wait(1000)
+    else:
+        if board.deck.currentCard == None:
+            pygame.time.wait(1000)
 
     pygame.display.flip()
     clock.tick(60)
