@@ -76,7 +76,13 @@ class dbConnection:
         print(incrementQuery)
         query.execute(incrementQuery)
         dbConnect.commit()
+
         
+    def createStatRecord(dbConnect, username):
+        query = dbConnect.cursor()
+        insertQuery = ("INSERT INTO tblStats (username, gamesPlayed, gamesInProgress, totalWins, totalLosses, totalKOs) VALUES (" "'" + username + "', '0', '0', '0', '0', '0');")
+        query.execute(insertQuery)
+        dbConnect.commit()      
         
     # This method is called when a user signs up. It will add a player to our DB. 
     def addPlayer(dbConnect, newUser):
@@ -85,7 +91,9 @@ class dbConnection:
         insertQuery = ("INSERT INTO tblPlayer (playerID, username, userPassword) VALUES (null," + "'" + newUser + "'" + "," + "'" + "null" + "'" + ")")
         query.execute(insertQuery)
         dbConnect.commit()
+        dbConnection.createStatRecord(dbConnect,newUser)
         mainMenu.startPage(newUser)
+        
 
     def playerExist(username):
         dbConnect = dbConnection.connectDB()

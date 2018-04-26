@@ -99,7 +99,7 @@ def intro(isNewUser, username):
                     button.draw(screen)
 
             TextSurf, TextRect = text_objects(username, smallText)
-            TextRect.center = ((270),(312))
+            TextRect.topleft = ((255),(303))
             screen.blit(TextSurf, TextRect)
                     
                 
