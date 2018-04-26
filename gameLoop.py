@@ -31,10 +31,12 @@ yellow = 0
 green = 90
 red = 180
 blue = 270
- 
+
+# create array to use for validation later on
 behaviorChoices = ["mean","nice"]
 intelligenceChoices = ["smart","dumb"]
 
+# create dictionary that is used to orient board
 colors= { "yellow": 0,
           "green": 90,
           "red": 180,
@@ -42,23 +44,21 @@ colors= { "yellow": 0,
           }
 
 #global validMoves and buttons list and activePawn - DO WE NEED TO FIX THIS?
-
 activePawn = None
 playState = 0
 
-
+# this is the main function that will create a new game
 def main(textObjects, numOfComps, userColor, username, mode):
     
     buttons = []
     validMoves = []
 
+    # takes care of sliding a pawn when they land on an arrow on the board
     def slide(board, pawn, lengthOfSlide):
         currentTile = pawn.tileName
         for i in range(lengthOfSlide-1):
             newTile = board.tiles[currentTile]['tileAhead']
-##            print("new tile", newTile)
             for otherPawn in board.pawns:
-##                print("other pawn", otherPawn.tileName)
                 if otherPawn.tileName == newTile:
                     if otherPawn.player == board.currentPlayer:
                         sorryPawn(board, otherPawn)
@@ -67,7 +67,8 @@ def main(textObjects, numOfComps, userColor, username, mode):
             currentTile = newTile
         deactivateAllTileButtons(buttons)
         activePawn.tileName = currentTile
-    
+        
+    # displays the squares that are valid moves for a pawn
     def displayValidMovesForPawn(validMoves, buttons, tileName):
         global playState
         global activePawn
@@ -87,12 +88,13 @@ def main(textObjects, numOfComps, userColor, username, mode):
             movePawnToPosition(buttons,validMoves[0][2])
         return None
 
+    # deactivate all tile buttons. (resets so you cant click or see them)
     def deactivateAllTileButtons(buttons):
-##        print("deactivate")
         for button in buttons:
             if 0 < button.name < 89:
                 button.active = False
 
+    # displays pawns that can move
     def displayPawnsWithValidMoves(validMoves, buttons):
         global playState
         deactivateAllTileButtons(buttons)
@@ -120,12 +122,13 @@ def main(textObjects, numOfComps, userColor, username, mode):
         elif playState == 2:
             #send to function that moves pawn to new space (including handling slides), discard card, increment player, next player's turn
             movePawnToPosition(buttons, tileName)
+            
+    # ends turn
     def endTurn(board, numPlayers):
         board.deck.discardCard()
         board.currentPlayer = board.currentPlayer%numPlayers + 1
-##        print("Current Player: " ,board.currentPlayer)
 
-    
+    # moves pawn to the tileName that is specified
     def movePawnToPosition(buttons, tileName):
         global playState
         global activePawn
@@ -133,23 +136,21 @@ def main(textObjects, numOfComps, userColor, username, mode):
         activePawn.tileName = tileName
         for otherPawn in board.pawns:
             if otherPawn.player != board.currentPlayer:
-##                print("other pawn", otherPawn.tileName)
                 if otherPawn.tileName == tileName:
                     sorryPawn(board, otherPawn)
-##        print(board.tiles[activePawn.tileName]['specialType'])
         if board.tiles[activePawn.tileName]['specialType'] == 'slide4':
             slide(board, activePawn, 4)
         elif board.tiles[activePawn.tileName]['specialType'] == 'slide5':
             slide(board, activePawn, 5)
         activePawn = None
-##        print(board.deck.currentCard.value)
         if board.deck.currentCard.value == '2':
             board.deck.discardCard()
         else:
             endTurn(board, numOfComps+1)
         playState = 0
         return None
-    
+
+    # is called when a player gets knocked off the board
     def sorryPawn(board, pawn):
         startNumbers = [61, 62, 63, 64]
         for num in startNumbers:
@@ -171,6 +172,8 @@ def main(textObjects, numOfComps, userColor, username, mode):
         txt = txt.getText()
         newTxtObject.append(txt.lower())
 
+        
+    # put behavior and intelligence settings into seperate arrays
     for i in range(0,len(newTxtObject)):
         if i % 2 == 0:
             
@@ -181,7 +184,7 @@ def main(textObjects, numOfComps, userColor, username, mode):
             intelligenceArray.append(newTxtObject[i])
 
 
-                                           
+    # validate behaviors the user set                                          
     for b in behaviorArray:
         if b not in behaviorChoices:
             if mode == 1:
@@ -189,7 +192,8 @@ def main(textObjects, numOfComps, userColor, username, mode):
             elif mode == 2:
                 mode = "player"
             mainMenu.newGame2(username, numOfComps, userColor, False, mode)
-            
+
+    # validate intelligence that user set
     for i in intelligenceArray:
         if i not in intelligenceChoices:
 
@@ -206,7 +210,6 @@ def main(textObjects, numOfComps, userColor, username, mode):
 
     # when you get here I am assuming input is valid and a new game is being played so
     # I update gamesPlayed in tblStats by 1
-    
     dbConnection.incrementGamesPlayed(dbConnection.connectDB(), username)
     
 
@@ -220,8 +223,6 @@ def main(textObjects, numOfComps, userColor, username, mode):
         for c in colors:
             color =  colors[userColor]
             board = Board(boardOrientation=color, boardLocation=(350, 0))
-
-
     if numOfComps == 2:
         for c in colors:
             color =  colors[userColor]
@@ -233,15 +234,13 @@ def main(textObjects, numOfComps, userColor, username, mode):
     for i in range(0,numOfComps):
         print(intelligenceArray[i])
         board.setComputer(i+2,intelligenceArray[i],behaviorArray[i])
-    # Print the order of the shuffled deck (top card listed last) for testing purposes
-##    board.deck.showCards()
-
 
     # Play state variable
     #1: choose valid pawn
     #2: choose valid move (new tile)
     #3: wait for discard
-    
+
+    # sets locations and names all buttons that go around board and adds to buttonsn array
     for i in range(1, 89):
         propLocX = board.tiles[i]['pos'][0]
         propLocY = board.tiles[i]['pos'][1]
@@ -267,7 +266,8 @@ def main(textObjects, numOfComps, userColor, username, mode):
     buttons.append(turnDone)
     buttons.append(backButton)
     buttons.append(instructionsButton)
-    
+
+    # start loop to create the board
     while True:
         screen.fill((225, 225, 225))
         for event in pygame.event.get():
