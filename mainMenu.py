@@ -31,6 +31,7 @@ smallText = pygame.font.Font('freesansbold.ttf', 20)
 mediumText = pygame.font.Font('freesansbold.ttf', 50)
 largeText = pygame.font.Font('freesansbold.ttf',115)
 
+# create text object
 def text_objects(text, font):
     textSurface = font.render(text, True, BLACK)
     return textSurface, textSurface.get_rect()
@@ -82,7 +83,9 @@ def intro(isNewUser, username):
         
         for button in buttons:
             button.draw(screen)
-
+            
+        # if a user is creating a new account add creteUser and cancel buttons
+        # depending on which is hit, perform some action
         if isNewUser == True:
             createUser = Button("Create new user", (300,400),dbConnection.addPlayer, actionArgs=[dbConnection.connectDB(),username], buttonSize=(100,30), buttonColor=DARKGREY)
             cancel = Button("Cancel",(300,450),intro, actionArgs=[False, None], buttonSize=(100,30), buttonColor=RED)
@@ -148,6 +151,7 @@ def startPage(username):
         pygame.display.update()
         clock.tick(30)
 
+# creates display for the stats page
 def statsDisplay(username):
     screen = pygame.display.set_mode((displayWidth,displayHeight))
     screen.fill(SCREEN)
@@ -205,6 +209,7 @@ def statsDisplay(username):
         pygame.display.update()
         clock.tick(30)
 
+# creates the first game setup page where numOfComps, user color, and pvp/pvc is set
 def newGame1(username, valid):
     
     screen = pygame.display.set_mode((displayWidth,displayHeight))
@@ -244,7 +249,7 @@ def newGame1(username, valid):
         
         screen.fill(SCREEN)
 
-                
+        # create text that will display on screen
         TextSurf, TextRect = text_objects(("New Game Setup"), mediumText)
         TextRect.center = ((displayWidth/2),(displayHeight/7))
         screen.blit(TextSurf, TextRect)
@@ -277,7 +282,8 @@ def newGame1(username, valid):
             
         pygame.display.update()
         clock.tick(30)
-        
+
+# creates second game setup page where computer intelligence/behavior is set
 def newGame2(username,numOfComps,userColor, valid, mode):
     
     # validate user input from newGame1
@@ -360,7 +366,7 @@ def newGame2(username,numOfComps,userColor, valid, mode):
                     txt.updateEvent(event)
         screen.fill(SCREEN)
 
-        # create title for page
+        # create text for page
         TextSurf, TextRect = text_objects(("New Game Setup"), mediumText)
         TextRect.center = ((displayWidth/2),(displayHeight/7))
         screen.blit(TextSurf, TextRect)
@@ -413,10 +419,12 @@ def newGame2(username,numOfComps,userColor, valid, mode):
         pygame.display.update()
         clock.tick(30)
 
+# eventually would be used for resume game
 def resumeGame():
     print("resume game")
 
-    
+
+# creates page for when a user view instructions 
 def instructions(username):
     screen = pygame.display.set_mode((displayWidth,displayHeight))
     screen.fill(SCREEN)
@@ -453,6 +461,7 @@ def instructions(username):
         backButton.draw(screen)
         pygame.display.update()
 
+# exits game
 def exitGame():
     print("Game Quit")
     pygame.quit()
