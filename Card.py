@@ -2,6 +2,7 @@ import pygame
 import random
 import Image
 
+pygame.font.init()
 """
 This class contains information to create cards. 
 """
@@ -58,10 +59,12 @@ class Deck:
         self.drawPileActive = True
         self.currentCard = None
         self.discard = None
+        self.discards = []
         for i in range(4):
             for value in Deck.values:
                 self.cards.append(Card(value))
         self.cards.append(Card("1"))
+      
 
     def showCards(self):
         for card in self.cards:
@@ -72,17 +75,22 @@ class Deck:
 
     def drawCard(self):
         self.currentCard = self.cards.pop()
+        self.discards.append(self.currentCard)
         if len(self.cards) == 0:
-            self.drawPileActive = False
+            self.shuffleDiscards()
+            self.drawCard()
         return self.drawPileActive
+    def shuffleDiscards(self):
+        print(self.discards)
+        random.shuffle(self.discards)
+        self.cards = self.discards
 
     def discardCard(self):
         if self.currentCard != None:
             self.discard = pygame.transform.rotozoom(self.currentCard.getCardImage(), 90, 0.3)
         self.currentCard = None
 
-
-    def displayDeck(self, screen, drawPileLocation, discardPileLocation, bigCardLocation):
+    def displayDeck(self, screen, board, drawPileLocation, discardPileLocation, bigCardLocation):
         if self.drawPileActive:
             if self.currentCard == None:
                 screen.blit(Deck.drawPileImage, (drawPileLocation))

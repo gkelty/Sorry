@@ -91,25 +91,25 @@ class Board:
            67: {'side': 2, 'specialType': 'safety', 'pos': (142, 492), 'tileAhead': 68, 'tileBehind': 66, 'tileRight': None},
            68: {'side': 2, 'specialType': 'safety', 'pos': (177, 492), 'tileAhead': 69, 'tileBehind': 67, 'tileRight': None},
            69: {'side': 2, 'specialType': 'safety', 'pos': (212, 492), 'tileAhead': 70, 'tileBehind': 68, 'tileRight': None},
-           70: {'side': 2, 'specialType': 'home', 'pos': (270, 492), 'tileAhead': None, 'tileBehind': 69, 'tileRight': None},
+           70: {'side': 2, 'specialType': 'home', 'pos': (270, 492), 'tileAhead': None, 'tileBehind': None, 'tileRight': None},
            71: {'side': 3, 'specialType': 'safety', 'pos': (107, 72), 'tileAhead': 72, 'tileBehind': 29, 'tileRight': None},
            72: {'side': 3, 'specialType': 'safety', 'pos': (107, 107), 'tileAhead': 73, 'tileBehind': 71, 'tileRight': None},
            73: {'side': 3, 'specialType': 'safety', 'pos': (107, 142), 'tileAhead': 74, 'tileBehind': 72, 'tileRight': None},
            74: {'side': 3, 'specialType': 'safety', 'pos': (107, 177), 'tileAhead': 75, 'tileBehind': 73, 'tileRight': None},
            75: {'side': 3, 'specialType': 'safety', 'pos': (107, 212), 'tileAhead': 76, 'tileBehind': 74, 'tileRight': None},
-           76: {'side': 3, 'specialType': 'home', 'pos': (108, 270), 'tileAhead': None, 'tileBehind': 75, 'tileRight': None},
+           76: {'side': 3, 'specialType': 'home', 'pos': (108, 270), 'tileAhead': None, 'tileBehind': None, 'tileRight': None},
            77: {'side': 4, 'specialType': 'safety', 'pos': (527, 107), 'tileAhead': 78, 'tileBehind': 44, 'tileRight': None},
            78: {'side': 4, 'specialType': 'safety', 'pos': (492, 107), 'tileAhead': 79, 'tileBehind': 77, 'tileRight': None},
            79: {'side': 4, 'specialType': 'safety', 'pos': (457, 107), 'tileAhead': 80, 'tileBehind': 78, 'tileRight': None},
            80: {'side': 4, 'specialType': 'safety', 'pos': (422, 107), 'tileAhead': 81, 'tileBehind': 79, 'tileRight': None},
            81: {'side': 4, 'specialType': 'safety', 'pos': (387, 107), 'tileAhead': 82, 'tileBehind': 80, 'tileRight': None},
-           82: {'side': 4, 'specialType': 'home', 'pos': (331, 107), 'tileAhead': None, 'tileBehind': 81, 'tileRight': None},
+           82: {'side': 4, 'specialType': 'home', 'pos': (331, 107), 'tileAhead': None, 'tileBehind': None, 'tileRight': None},
            83: {'side': 1, 'specialType': 'safety', 'pos': (492, 527), 'tileAhead': 84, 'tileBehind': 59, 'tileRight': None},
            84: {'side': 1, 'specialType': 'safety', 'pos': (492, 492), 'tileAhead': 85, 'tileBehind': 83, 'tileRight': None},
            85: {'side': 1, 'specialType': 'safety', 'pos': (492, 457), 'tileAhead': 86, 'tileBehind': 84, 'tileRight': None},
            86: {'side': 1, 'specialType': 'safety', 'pos': (492, 422), 'tileAhead': 87, 'tileBehind': 85, 'tileRight': None},
            87: {'side': 1, 'specialType': 'safety', 'pos': (492, 387), 'tileAhead': 88, 'tileBehind': 86, 'tileRight': None},
-           88: {'side': 1, 'specialType': 'home', 'pos': (493, 331), 'tileAhead': None, 'tileBehind': 87, 'tileRight': None}}
+           88: {'side': 1, 'specialType': 'home', 'pos': (493, 331), 'tileAhead': None, 'tileBehind': None, 'tileRight': None}}
 
     def __init__(self, boardOrientation, boardLocation=(350, 0), playersEnabled=[True, True, True, True]):
         self.orientation = boardOrientation # degrees of orientation off of yellow on bottom
@@ -129,7 +129,7 @@ class Board:
             if playersEnabled[i]:
                 for j in range(4):
                     id += 1
-                    self.pawns.append(Pawn(id, Pawn.colors[index], index+1, Board.startLocations[i]))
+                    self.pawns.append(Pawn(id, Pawn.colors[index], i+1, Board.startLocations[i]))
                                             #only rotate init colors to match board rotation, not startLocations
         #self.currentPositions = []
         self.deck = Deck()
@@ -142,6 +142,11 @@ class Board:
         #     propLocY = propLocY+self.boardLocation[1]
         #     boardBut = BoardButton(i,propLocX,propLocY)
         #     self.boardButtons.append(boardBut.createBoard())
+
+    def getPlayerColor(self):
+        for pawn in self.pawns:
+            if pawn.player == self.currentPlayer:
+                return pawn.color
 
     def checkInStart(self, pawn):
         inStart = False
@@ -205,12 +210,12 @@ class Board:
     #def returnBoard(self):
        # return(self.boardButtons)
 
-    def displayBoard(self, screen):
+    def displayBoard(self, screen, board):
         screen.blit(self.image, self.boardLocation)
         screen.blit(Board.boardCenterImage, self.boardLocation)
 
         #Blit current card on screen
-        self.deck.displayDeck(screen, self.drawPileLocation, self.discardPileLocation, self.bigCardLocation)
+        self.deck.displayDeck(screen, board, self.drawPileLocation, self.discardPileLocation, self.bigCardLocation)
 
     def displayPawns(self, screen):
         #Blit pawns on screen
@@ -226,3 +231,70 @@ class Board:
                 pawnsStartHome[pawn.tileName] += 1
             else:
                 pawn.displayPawn(screen, (locationX + Board.pawnTileOffset[0], locationY + Board.pawnTileOffset[1]))
+
+    def displayColor(self, screen):
+        myfont = pygame.font.SysFont('freesans.ttf', 30)
+        mode = 1  # mode 1: play against computer, mode 2: play with friends -- pass this value in to this function
+        if mode == 1:
+            if self.currentPlayer == 1:
+                turnMessage = "It's your turn!"
+            else:
+                turnMessage = "It's " + self.getPlayerColor() + "'s turn"
+        if mode == 2:
+            turnMessage = "It's " + self.getPlayerColor() + "'s turn"
+        textsurface = myfont.render(turnMessage, False, (0, 0, 0))
+        screen.blit(textsurface, (100, 300))
+
+    def getInstructions(self, validMoves, playState):
+        mode = 1        # mode 1: play against computer, mode 2: play with friends -- pass this value in to this function
+        instructions = []
+        if mode == 1:
+            if self.currentPlayer != 1:
+                instructions = ["Please wait..."]
+            else:
+                if self.deck.currentCard == None:
+                    if validMoves == []:
+                        instructions = ["Click on the draw pile to select a card."]
+                    else:
+                        for move in validMoves:
+                            if move[1]['drawAgain']:
+                                instructions = ["You get to draw again.", "Click on the draw pile to select a card."]
+                            else:
+                                instructions = ["Click on the draw pile to select a card."]
+
+                elif validMoves == []:
+                    instructions = ["You cannot move.", "Click the End Turn button."]
+                elif validMoves != []:
+                    if playState == 1:
+                        instructions = ["Click on a highlighted pawn", "to see its possible moves."]
+                    elif playState == 2:
+                        instructions = ["Click on a highlighted space", "to move the pawn there."]
+        if mode == 2:
+            if self.deck.currentCard == None:
+                if validMoves == []:
+                    instructions = ["Click on the draw pile to select a card."]
+                else:
+                    for move in validMoves:
+                        if move[1]['drawAgain']:
+                            instructions = ["You get to draw again.", "Click on the draw pile to select a card."]
+                        else:
+                            instructions = ["Click on the draw pile to select a card."]
+
+            elif validMoves == []:
+                instructions = ["You cannot move.", "Click the End Turn button."]
+            elif validMoves != []:
+                if playState == 1:
+                    instructions = ["Click on a highlighted pawn",  "to see its possible moves."]
+                elif playState == 2:
+                    instructions = ["Click on a highlighted space", "to move the pawn there."]
+        return instructions
+
+    def displayInstructions(self, screen, validMoves, playState):
+        yLoc = 400
+        myfont = pygame.font.SysFont('segoe UI', 15)
+        instructions = self.getInstructions(validMoves, playState)
+        for line in instructions:
+            textsurface = myfont.render(line, False, (0, 0, 0))
+            screen.blit(textsurface, (50, yLoc))
+            yLoc += 25
+
