@@ -7,7 +7,7 @@ import pygame.locals as pl
 import sys
 import os.path
 pygame.init()
-pygame.font.init()
+##pygame.font.init()
 
 # Height and Width of display screen
 displayWidth = 600
@@ -214,11 +214,12 @@ def newGame1(username, valid):
     numOfComps = TextInputBox(250, 235, 140, 22)
     mode = TextInputBox(250, 435,140, 22)
 
+
     txtBoxes = [userColor, numOfComps, mode]
 
     colorButton = Button("continue..", (300,500), newGame2, actionArgs=[username, numOfComps,userColor, True, mode], buttonSize=(200,30),buttonColor = BLUE)
 ##    backButton = Button("Main Menu", (300,550), startPage, actionArgs=[username], buttonSize=(200,30), buttonColor = FORESTGREEN)
-
+    
     buttons = [colorButton]
 
     clock = pygame.time.Clock()
@@ -234,13 +235,11 @@ def newGame1(username, valid):
                     Button.mouseButtonDown(button)                    
                     for txt in txtBoxes:
                         txt.updateEvent(event)
-##                    userColor.updateEvent(event)
-##                    numOfComps.updateEvent(event)
+
             else:
                 for txt in txtBoxes:
                     txt.updateEvent(event)
-##                userColor.updateEvent(event)
-##                numOfComps.updateEvent(event)
+
 
         
         screen.fill(SCREEN)
@@ -265,12 +264,6 @@ def newGame1(username, valid):
         for txt in txtBoxes:
             txt.updateDisplay()
             txt.draw(screen)
-
-##        userColor.updateDisplay()
-##        userColor.draw(screen)
-##        numOfComps.updateDisplay()
-##        numOfComps.draw(screen)
- 
 
         for button in buttons:
             color = button.getButtonColor()
@@ -325,12 +318,10 @@ def newGame2(username,numOfComps,userColor, valid, mode):
         mode = mode.getText().lower()
 
     if mode not in possibleModes:
-        print("mode:", mode)
         newGame1(username, False)
     elif mode == "player":
         mode = 2
-        main(textObjects, numOfComps, userColor, username, mode)
-
+##        main(textObjects, numOfComps, userColor, username, mode)        
     elif mode == "computer":
         mode = 1
 
