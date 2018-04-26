@@ -49,10 +49,6 @@ playState = 0
 
 def main(textObjects, numOfComps, userColor, username, mode):
     
-    # when you get here I am assuming a new game is being played so
-    # I update gamesPlayed in tblStats by 1
-    dbConnection.incrementGamesPlayed(dbConnection.connectDB(), username)
-    
     buttons = []
     validMoves = []
 
@@ -203,7 +199,11 @@ def main(textObjects, numOfComps, userColor, username, mode):
             mainMenu.newGame2(username, numOfComps, userColor, False, mode)
 
 
-        
+    # when you get here I am assuming input is valid and a new game is being played so
+    # I update gamesPlayed in tblStats by 1
+    
+    dbConnection.incrementGamesPlayed(dbConnection.connectDB(), username)
+    
     # Create screen and initialize clock
     screen = pygame.display.set_mode((1000, 600))
     clock = pygame.time.Clock()
