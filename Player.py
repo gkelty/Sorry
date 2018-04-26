@@ -5,8 +5,6 @@ import random
 # color
 color = ["red","yellow","Green","Blue"]
 
- ca26677c90ad463371ac207e78bfe35e8fea6e81
-
 
 class Player:
 
