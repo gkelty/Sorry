@@ -5,7 +5,7 @@ import random
 
 class Player:
 
-    def _init_(self,id,color =0 , mean = False, smart = False,):
+    def _init_(self,id=0,color =0 , mean = False, smart = False,):
 
         self.color = color
         self.mean = mean
