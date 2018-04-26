@@ -131,7 +131,7 @@ class Board:
         self.user = Player(id=1)
         self.comp2 = Player(id=3)
         self.comp3 = Player(id=4)
-        self.compList = [self.comp1,self.comp2,self.comp3]
+        #self.compList = [self.comp1,self.comp2,self.comp3]
         id = 0
         indexOffset = int(self.orientation / 90)
         for i in range(4):
@@ -157,7 +157,7 @@ class Board:
             intel = True
         if(behav.lower()=="mean"):
             behav = True
-        self.compList[id].initialSetup(intel,behav)
+        #self.compList[id].initialSetup(intel,behav)
 
     def getPlayerColor(self):
         for pawn in self.pawns:

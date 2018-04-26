@@ -72,7 +72,7 @@ def main(textObjects, numOfComps, userColor, username, mode):
         global playState
         global activePawn
         deactivateAllTileButtons(buttons)
-        if board.currentPlayer ==1:
+        if (board.currentPlayer ==1 or mode ==2):
             for move in validMoves:
                 pawn = move[0]
                 if pawn.tileName == tileName:
