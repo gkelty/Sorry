@@ -180,8 +180,7 @@ def main(textObjects, numOfComps, userColor, username):
         else:
             
             intelligenceArray.append(newTxtObject[i])
-    for i in range(3):
-        board.setComputer(i+2,intelligenceArray[i],behaviorArray[i])
+
 
                                            
     for b in behaviorArray:
@@ -203,6 +202,7 @@ def main(textObjects, numOfComps, userColor, username):
             color =  colors[userColor]
             board = Board(boardOrientation=color, boardLocation=(350, 0))
 
+
     if numOfComps == 2:
         for c in colors:
             color =  colors[userColor]
@@ -211,7 +211,9 @@ def main(textObjects, numOfComps, userColor, username):
         for c in colors:
             color =  colors[userColor]
             board = Board(boardOrientation=color, boardLocation=(350, 0), playersEnabled=[True, True, False, False] )
-
+    for i in range(0,numOfComps):
+        print(intelligenceArray[i])
+        board.setComputer(i+2,intelligenceArray[i],behaviorArray[i])
     # Print the order of the shuffled deck (top card listed last) for testing purposes
     board.deck.showCards()
 

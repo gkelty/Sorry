@@ -124,11 +124,11 @@ class Board:
         self.players = playersEnabled
         self.currentPlayer = 1
         #Set up for the computers, intel and behav is defined later, ID of 1 is the user
-        self.comp1 = Player()
-        self.user = Player()
-        self.comp2 = Player()
-        self.comp3 = Player()
-        self.compList = [comp1,comp2,comp3]
+        self.comp1 = Player(id=2)
+        self.user = Player(id=1)
+        self.comp2 = Player(id=3)
+        self.comp3 = Player(id=4)
+        self.compList = [self.comp1,self.comp2,self.comp3]
         id = 0
         indexOffset = int(self.orientation / 90)
         for i in range(4):
@@ -154,7 +154,7 @@ class Board:
             intel = True
         if(behav.lower()=="mean"):
             behav = True
-        compList[id].initialSetup(intel,behav)
+        self.compList[id].initialSetup(intel,behav)
 
     def getPlayerColor(self):
         for pawn in self.pawns:
