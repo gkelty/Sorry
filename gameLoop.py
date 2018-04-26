@@ -180,6 +180,8 @@ def main(textObjects, numOfComps, userColor, username):
         else:
             
             intelligenceArray.append(newTxtObject[i])
+    for i in range(3):
+        board.setComputer(i+2,intelligenceArray[i],behaviorArray[i])
 
                                            
     for b in behaviorArray:
@@ -189,7 +191,7 @@ def main(textObjects, numOfComps, userColor, username):
     for i in intelligenceArray:
         if i not in intelligenceChoices:
             mainMenu.newGame2(username, numOfComps, userColor, False)
-        
+
     # Create screen and initialize clock
     screen = pygame.display.set_mode((1000, 600))
     clock = pygame.time.Clock()

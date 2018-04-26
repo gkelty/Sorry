@@ -64,7 +64,7 @@ class Deck:
             for value in Deck.values:
                 self.cards.append(Card(value))
         self.cards.append(Card("1"))
-      
+
 
     def showCards(self):
         for card in self.cards:

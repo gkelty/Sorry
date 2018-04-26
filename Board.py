@@ -3,6 +3,7 @@ from Pawn import Pawn
 from Card import Card, Deck
 from boardButton import BoardButton
 import Image
+from Player import Player
 
 class Board:
     boardImage = Image.getImage('images\sorryGameBoardNoCenter.png')
@@ -122,6 +123,12 @@ class Board:
         self.pawns = []
         self.players = playersEnabled
         self.currentPlayer = 1
+        #Set up for the computers, intel and behav is defined later, ID of 1 is the user
+        self.comp1 = Player(id=4)
+        self.user = Player(id=1)
+        self.comp2 = Player(id=2)
+        self.comp3 = Player(id=3)
+        self.compList = [comp1,comp2,comp3]
         id = 0
         indexOffset = int(self.orientation / 90)
         for i in range(4):
@@ -142,6 +149,12 @@ class Board:
         #     propLocY = propLocY+self.boardLocation[1]
         #     boardBut = BoardButton(i,propLocX,propLocY)
         #     self.boardButtons.append(boardBut.createBoard())
+    def setComputer(self,id,intel,behav):
+        if(intel.lower()=="smart"):
+            intel = True
+        if(behav.lower()=="mean"):
+            behav = True
+        compList[id].initialSetup(intel,behav)
 
     def getPlayerColor(self):
         for pawn in self.pawns:

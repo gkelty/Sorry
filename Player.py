@@ -5,29 +5,33 @@ import random
 
 class Player:
 
-     def _init_(self, color, mean, smart,human):
+    def _init_(self,id,color =0 , mean = False, smart = False,):
 
-         self.color = color
-         self.mean = mean
-         self.smart = smart
-         self.human = human
+        self.color = color
+        self.mean = mean
+        self.smart = smart
+        self.id = id
+        self.pawns = []
+    def getColor(self):
+        return self.color
+    def initialSetup(self,intel,behavior):
 
-     def getColor(self):
-         return self.color
+        self.smart = intel
+        self.mean = behavior
 
-     def getMean(self):
-         return self.mean
+    def getMean(self):
+        return self.mean
 
-     def getSmart(self):
-         return self.smart
+    def getSmart(self):
+        return self.smart
 
-     def getHuman(self):
-         return self.human
-     
-     def setMean(self,mean):
-          self.mean = mean
-     def setColor(self,color):
-          self.color = color
+    def getId(self):
+        return self.id
+
+    def setMean(self,mean):
+        self.mean = mean
+    def setColor(self,color):
+        self.color = color
 
 
 
